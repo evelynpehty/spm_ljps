@@ -1,13 +1,32 @@
 <template>
+  <HrNavigation v-if="show==1" />
+  <StaffNavigation v-if="show==2" />
   <router-view/>
 </template>
 
 <script>
 
-
+import HrNavigation from "./components/HrNavigation";
+import StaffNavigation from "./components/StaffNavigation";
 export default {
   name: 'App',
-  components: {
+  components: {HrNavigation, StaffNavigation},
+  data() {
+    //test
+  },
+  computed: {
+    show(){
+      if(this.$store.state.userrole){
+        if(this.$store.state.userrole == "hr"){
+          return 1
+        }
+        else if(this.$store.state.userrole == "staff"){
+          return 2
+        }
+      }
+      return 0
+      }
+
     
   }
 }

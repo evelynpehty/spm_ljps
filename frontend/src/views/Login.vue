@@ -62,7 +62,6 @@ export default {
         loading: null,
         modalMessage: null,
         modalActive: null,
-        pathname:""
         };
     },
     components: {
@@ -73,8 +72,33 @@ export default {
       this.modalActive = !this.modalActive;
     },
       login(){
-         //this.loading = true;
+         this.loading = true;
+         var email = this.email
+         this.axios.get('http://localhost:5000/api/staff/'+email).then((response) => {
+            var roleid = response.data.data.Role
+            var name = response.data.data.Staff_FName + " " + response.data.data.Staff_LName
+            var staffid = response.data.data.Staff_ID
 
+            var setjson;
+            if(roleid == 1 & this.password =="hr"){
+              setjson= {"userid":staffid, "userrole":"hr", "username":name}
+              this.$store.commit("setuserInfo", setjson)
+              this.$router.push({ name: "HrMain" });
+              
+            }
+            if(roleid == 2 & this.password =="staff"){
+              setjson= {"userid":staffid, "userrole":"staff", "username":name}
+              this.$store.commit("setuserInfo", setjson)
+              this.$router.push({ name: "StaffMain" });
+            }
+            this.modalActive = true
+            this.loading = false;
+            this.modalMessage = "Incorrect username/password"
+         }).catch(() => { 
+            this.modalActive = true
+            this.loading = false;
+            this.modalMessage = "Incorrect username/password"
+          })
       }
     }
 }
