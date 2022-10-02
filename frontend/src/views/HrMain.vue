@@ -2,23 +2,23 @@
       
 <div class="container-fluid">
   <div class="row" style="margin-top:80px">
-        <h3>Hello {{name}}</h3>
+    <h3>Hello {{name}}</h3>
   </div>
 </div>
         
 </template>
     
-  <script>
+<script>
 
   
   export default {
-      name: "HrMain",
-      data() {
-          return {
-          name: this.$store.state.username,
-          
-          };
-      },
+    name: "HrMain",
+    data() {
+      return {
+      name: this.$store.state.username,
+      
+      };
+    },
   }
-  </script>
+</script>
   

@@ -2,7 +2,7 @@
   <div class="modal">
     <div class="modal-content">
       <div class="d-flex justify-content-end">
-         <i class="fa fa-times-circle" style="color: #5ac2c2" @click="closeModal"></i>
+        <font-awesome-icon icon="fa-solid fa-circle-xmark" style="color: #52665F" @click="closeModal" />
       </div>
       <div class="d-flex justify-content-center align-items-center text-center mt-3 mx-5">
          <p v-html="modalMessage"></p>

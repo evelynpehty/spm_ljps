@@ -8,13 +8,21 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link mx-2" href="/HrMain">Home</a>
+            <a class="nav-link mx-3" href="/HrMain">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link mx-2" href="/Skill">Manage Skills</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle mx-3" href="#" role="button" data-bs-toggle="dropdown">Skills</a>
+            <ul class="dropdown-menu mx-3">
+              <li><a class="dropdown-item" href="/create-skills">Create Skills</a></li>
+              <li><a class="dropdown-item" href="/view-all-skills">View All Skills</a></li>
+            </ul>
           </li>
-          <li class="nav-item">
-            <a class="nav-link mx-2" href="/JobRole">Manage Roles</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle mx-3" href="#" role="button" data-bs-toggle="dropdown">Job Roles</a>
+            <ul class="dropdown-menu mx-3">
+              <li><a class="dropdown-item" href="/create-jobs">Create Job Roles</a></li>
+              <li><a class="dropdown-item" href="/view-all-jobs">View All Job Roles</a></li>
+            </ul>
           </li>
         </ul>
         <ul class="navbar-nav me-0 mb-2 mb-lg-0">

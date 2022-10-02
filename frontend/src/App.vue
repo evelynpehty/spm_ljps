@@ -25,9 +25,7 @@ export default {
         }
       }
       return 0
-      }
-
-    
+    }
   }
 }
 </script>
@@ -50,7 +48,7 @@ export default {
   
   h1, h2, h3, h4, h5, h6 {
     font-family: 'ShareFontBold', Arial, sans-serif !important;
-    color: #5ac2c2;
+    color: #575C5F;
   }
   
   div {
@@ -58,23 +56,23 @@ export default {
   }
   
   .btn-success {
-    background-color: #5ac2c2 !important;
-    border-color: #5ac2c2 !important;
+    background-color: #5D726A !important;
+    border-color: #5D726A !important;
   }
   
   .btn-outline-success {
-    color: #5ac2c2 !important;
-    border: 1px solid #5ac2c2 !important
+    color: #5D726A !important;
+    border: 1px solid #5D726A !important
   }
   
   .btn-outline-success:hover {
     color: white !important;
-    background-color: #5ac2c2 !important;
+    background-color: #5D726A !important;
   }
   
   .input-group-text {
-    background-color: #cff5f5 !important;
-    color: #5ac2c2 !important;
+    background-color: #5D726A !important;
+    color: #52665F !important;
   }
   
   .input-border-color {
