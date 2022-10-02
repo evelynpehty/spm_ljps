@@ -3,8 +3,11 @@ import LoginPage from '../views/Login.vue'
 import StaffMain from '../views/StaffMain.vue'
 import HrMain from '../views/HrMain.vue'
 
-import Skill from '../views/Skill.vue'
-import JobRole from '../views/JobRole.vue'
+import CreateSkills from '../views/Skills/CreateSkills.vue'
+import ViewAllSkills from '../views/Skills/ViewAllSkills.vue'
+
+import CreateJobs from '../views/JobRoles/CreateJobs.vue'
+import ViewAllJobs from '../views/JobRoles/ViewAllJobs.vue'
 
 const routes = [
   {
@@ -22,7 +25,7 @@ const routes = [
     name: "StaffMain",
     component: StaffMain,
     meta: {
-      title: "StaffMain",
+      title: "Homepage",
       requiresAuth: true,
     }
   },
@@ -32,26 +35,47 @@ const routes = [
     name: "HrMain",
     component: HrMain,
     meta: {
-      title: "HrMain",
-      requiresAuth: true,
-    }
-  },
-  {
-    path: "/Skill",
-    name: "Skill",
-    component: Skill,
-    meta: {
-      title: "Skill",
+      title: "Homepage",
       requiresAuth: true,
     }
   },
 
   {
-    path: "/JobRole",
-    name: "JobRole",
-    component: JobRole,
+    path: "/create-skills",
+    name: "CreateSkills",
+    component: CreateSkills,
     meta: {
-      title: "JobRole",
+      title: "Create Skills",
+      requiresAuth: true,
+    }
+  },
+
+  {
+    path: "/view-all-skills",
+    name: "ViewAllSkills",
+    component: ViewAllSkills,
+    meta: {
+      title: "View All Skills",
+      requiresAuth: true,
+    }
+  },
+
+  {
+    path: "/create-jobs",
+    name: "CreateJobs",
+    component: CreateJobs,
+    meta: {
+      title: "Create Jobs",
+      requiresAuth: true,
+    }
+  },
+
+  {
+    path: "/view-all-jobs",
+    name: "ViewAllJobs",
+    component: ViewAllJobs,
+    meta: {
+      title: "View All Jobs",
       requiresAuth: true,
     }
   },

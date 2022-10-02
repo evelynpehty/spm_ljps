@@ -1,7 +1,7 @@
 <template>
   <Loading v-show="loading" />
   <Modal v-if="modalActive" :modalMessage="modalMessage" v-on:close-modal="closeModal"/>
-  <section class="vh-100" style="background-color: #cff5f5;">
+  <section class="vh-100" style="background-color: #CCD8DB;">
     <div class="container h-100">
       <div class="row d-flex flex-wrap justify-content-center align-items-center h-100">
         <div class="col col-xl-10">
