@@ -49,4 +49,53 @@ def getstaffbyemail(email):
         "code": 404,
         "message": "No record found"
     }),404
-    
+
+########################################################
+
+"""
+Skills
+- Create Skill 
+""" 
+#Create Skills
+@api.route("/skill/create", methods=['POST'])
+def create_skill():
+    data = request.get_json()
+
+    if (Skill.query.filter_by(Skill.Skill_Name == data['Skill_Name'].first())):
+        return jsonify(
+            {
+                "code": 400,
+                "data": {
+                    "Skill_Name": Skill.Skill_Name
+                },
+                "message": "Skill already exists."
+            }
+        ), 400
+
+    skill = Skill(data['Skill_Name'])
+
+    try:
+        db.session.add(skill)
+        db.session.commit()
+
+        course_list = data['Course_Skills']
+        for Course_ID in course_list:
+            course_skill = CourseSkill(Skill.Skill_ID, Course_ID)
+            db.session.add(course_skill)
+        
+        db.session.commit()
+
+    except: 
+        return jsonify(
+            {
+                "code": 500,
+                "message": "An error occurred creating the skill."
+            }
+        ), 500
+
+    return jsonify(
+        {
+            "code": 201,
+            "data": skill.json()
+        }
+    ), 201  
