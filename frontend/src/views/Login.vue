@@ -74,30 +74,42 @@ export default {
       login(){
          this.loading = true;
          var email = this.email
+         var roleid;
+         var rolename;
+         var name ;
+         var staffid;
+             
          this.axios.get('http://localhost:5000/api/staff/'+email).then((response) => {
-            var roleid = response.data.data.Role
-            var name = response.data.data.Staff_FName + " " + response.data.data.Staff_LName
-            var staffid = response.data.data.Staff_ID
-
-            var setjson;
-            if(roleid == 1 & this.password =="admin"){
-              setjson= {"userid":staffid, "userrole":"admin", "username":name}
-              this.$store.commit("setuserInfo", setjson)
-              this.$router.push({ name: "HrMain" });
-              
-            }
-            if(roleid == 2 & this.password =="staff"){
-              setjson= {"userid":staffid, "userrole":"staff", "username":name}
-              this.$store.commit("setuserInfo", setjson)
-              this.$router.push({ name: "StaffMain" });
-            }
-            this.modalActive = true
-            this.loading = false;
-            this.modalMessage = "Incorrect username/password"
+             roleid = response.data.data.Role
+             name = response.data.data.Staff_FName + " " + response.data.data.Staff_LName
+             staffid = response.data.data.Staff_ID
          }).catch(() => { 
             this.modalActive = true
             this.loading = false;
             this.modalMessage = "Incorrect username/password"
+          }).finally(()=>{
+            this.axios.get('http://localhost:5000/api/role/'+roleid).then((response) => {
+              rolename = response.data.data.Role_Name 
+            }).catch(() => { 
+                this.modalActive = true
+                this.loading = false;
+                this.modalMessage = "role does not exist"
+            }).finally(()=>{
+              var setjson;
+              if(rolename == "Admin" & this.password =="admin"){
+              setjson= {"userid":staffid, "userrole":"admin", "username":name}
+              this.$store.commit("setuserInfo", setjson)
+              this.$router.push({ name: "HrMain" }); 
+              }
+              else if(rolename != "Admin" & this.password =="staff"){
+                setjson= {"userid":staffid, "userrole":"staff", "username":name}
+                this.$store.commit("setuserInfo", setjson)
+                this.$router.push({ name: "StaffMain" });
+              }
+              this.modalActive = true
+              this.loading = false;
+              this.modalMessage = "Incorrect username/password"
+            })
           })
       }
     }
