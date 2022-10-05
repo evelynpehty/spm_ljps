@@ -78,11 +78,10 @@ export default {
             var roleid = response.data.data.Role
             var name = response.data.data.Staff_FName + " " + response.data.data.Staff_LName
             var staffid = response.data.data.Staff_ID
-            var dept = response.data.data.Dept
 
             var setjson;
-            if(roleid == 1 & this.password =="hr" & dept =="HR"){
-              setjson= {"userid":staffid, "userrole":"hr", "username":name}
+            if(roleid == 1 & this.password =="admin"){
+              setjson= {"userid":staffid, "userrole":"admin", "username":name}
               this.$store.commit("setuserInfo", setjson)
               this.$router.push({ name: "HrMain" });
               

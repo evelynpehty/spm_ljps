@@ -17,7 +17,7 @@ export default {
   computed: {
     show(){
       if(this.$store.state.userrole){
-        if(this.$store.state.userrole == "hr"){
+        if(this.$store.state.userrole == "admin"){
           return 1
         }
         else if(this.$store.state.userrole == "staff"){
