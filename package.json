@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@coreui/coreui-pro": "^4.3.4",
+    "vue-multi-select": "^4.6.0",
+    "vuetify": "^2.6.10"
+  }
+}
