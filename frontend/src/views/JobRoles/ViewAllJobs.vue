@@ -8,7 +8,7 @@
 
 <script>
 export default {
-    name: "ViewAllJobRolesPage",
+    name: "ViewAllJobs",
 }
 </script>
 

@@ -31,12 +31,24 @@
             <label for="JobRoleDesc">Job Role Description</label>
           </div>
 
-          <div v-if="boolSkills" class="form-floating mb-3">
+          <!-- <div v-if="boolSkills" class="form-floating mb-3">
             <select class="form-select input-border-color" id="JobRoleSkills" aria-label="Floating label select example">
               <option>Select a Skill...</option>
               <option v-for="(item, index) in activeSkills" :key="index" :id="item.Skill_ID" :value="item.Skill_ID">{{item.Skill_Name}}</option>
             </select>
             <label for="floatingSelect">Skills affiliated with Job Role</label>
+          </div> -->
+
+          <div v-if="boolSkills" class="form-floating mb-3">
+            <VueMultiselect
+            :preserve-search="true"
+            :multiple="true"
+            :close-on-select="false"
+            :options="activeSkills"
+            v-model="selectedSkills"
+            label="Skill_Name"
+            track-by="Skill_Name"
+            />
           </div>
 
           <div class="d-grid mb-2">
@@ -51,13 +63,16 @@
 <script>
 import Modal from "/src/components/Modal";
 import Loading from "/src/components/Loading";
+import VueMultiselect from 'vue-multiselect'
+
 
 export default {
-  name: "CreateJobRolesPage",
+  name: "CreateJobs",
 
   components: {
     Modal,
-    Loading
+    Loading,
+    VueMultiselect
   },
 
   data () {
@@ -82,7 +97,6 @@ export default {
       errors: []
     }
   },
-
   created() {
     this.loading = true
     this.axios.get("http://localhost:5000/api/skill/Active").then((response)=> {
@@ -100,17 +114,18 @@ export default {
   }, 
 
   methods: {
+    
     closeModal() {
       this.modalActive = !this.modalActive;
     },
 
     btnYes() {
       this.closeModal()
-      this.resetField()
+      this.$router.go(this.$router.currentRoute)
     },
 
     btnNo(){
-      //this.$router.push({name:"OrgMain"})
+      this.$router.push({name:"ViewAllJobs"})
     },
 
     checkForm(){
@@ -142,18 +157,23 @@ export default {
     },
 
     CreateJobRole() {
+      var selected_skillid = []
+      for(var j of this.selectedSkills){
+        selected_skillid.push(j.Skill_ID)
+      }
       this.loading = true;
+     
       var json = {
         "Job_Role_Name": this.JobRoleName,  
         "Job_Role_Desc": this.JobRoleDesc,
-        "Job_Role_Skills": this.selectedSkills,
+        "Job_Role_Skills": selected_skillid,
       }
       console.log(this.selectedSkills)
       this.axios.post('http://localhost:5000/api/jobrole', json).then((response) => {
           this.modalMessage = response.data.message + " Create Another?"
           this.btnActive = true
         }).catch(error => {
-            this.modalMessage = error.response.data.data.message 
+            this.modalMessage = error.response.data.message 
             this.btnActive = false
         }).finally(() => {
             this.loading = false
@@ -165,7 +185,7 @@ export default {
 
 }
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style>
 h2 {
    margin: 0px !important;
