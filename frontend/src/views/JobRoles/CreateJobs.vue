@@ -9,11 +9,11 @@
     </div>
     <br>
 
-    <div v-if="errors.length != 0" class="row">
+    <div v-if="errors.length != 0">
       <div class="alert alert-danger mb-5" role="alert">
         <h4>Please check your inputs</h4>
         <ul>
-          <li class="m-0" v-for="e in errors" :key="e"> {{e}}</li>
+          <li class="m-0" v-for="e in errors" :key="e">{{e}}</li>
         </ul>
       </div>
     </div>
@@ -21,25 +21,18 @@
     <div class="card border-0 shadow p-3 mb-5 bg-white rounded">
       <div class="card-body">
         <form @submit.prevent v-on:submit="checkForm">
-          <div class="form-floating mb-3">
-            <input type="text" class="form-control form-control-md input-border-color" id="JobRoleName" placeholder="Enter Job Role Name..." v-model="JobRoleName" required>
-            <label for="JobRoleName">Job Role Name</label>
+          <div class="mb-3">
+            <label for="JobRoleName" class="form-label">Job Role Name</label>
+            <input type="text" class="form-control form-control-md input-border-color" id="JobRoleName" placeholder="e.g. Software Engineer" v-model="JobRoleName" required>
           </div>
 
-          <div class="form-floating mb-3">
-            <textarea class="form-control form-control-md input-border-color" placeholder="Enter Job Role Description..." id="floatingTextarea" style="height: 100px;" v-model="JobRoleDesc" required></textarea>
-            <label for="JobRoleDesc">Job Role Description</label>
+          <div class="mb-3">
+            <label for="JobRoleDesc" class="form-label">Job Role Description</label>
+            <textarea class="form-control form-control-md input-border-color" placeholder="e.g. Will be tasked to code the frontend of application." id="floatingTextarea" style="height: 100px;" v-model="JobRoleDesc" required></textarea>
           </div>
 
-          <!-- <div v-if="boolSkills" class="form-floating mb-3">
-            <select class="form-select input-border-color" id="JobRoleSkills" aria-label="Floating label select example">
-              <option>Select a Skill...</option>
-              <option v-for="(item, index) in activeSkills" :key="index" :id="item.Skill_ID" :value="item.Skill_ID">{{item.Skill_Name}}</option>
-            </select>
-            <label for="floatingSelect">Skills affiliated with Job Role</label>
-          </div> -->
-
-          <div v-if="boolSkills" class="form-floating mb-3">
+          <div v-if="boolSkills" class="mb-3">
+            <label for="SkillName" class="form-label">Skills affiliated with Job Role</label>
             <VueMultiselect
             :preserve-search="true"
             :multiple="true"
@@ -48,6 +41,20 @@
             v-model="selectedSkills"
             label="Skill_Name"
             track-by="Skill_Name"
+            placeholder="Select Skills..."
+            />
+          </div>
+          <div v-else class="mb-3">
+            <label for="SkillName" class="form-label">Skills affiliated with Job Role</label>
+            <VueMultiselect
+            :preserve-search="true"
+            :multiple="true"
+            :close-on-select="false"
+            :options="activeSkills"
+            v-model="selectedSkills"
+            label="Skill_Name"
+            track-by="Skill_Name"
+            placeholder="No Available Skills..."
             />
           </div>
 
@@ -89,7 +96,7 @@ export default {
 
       // Component item
       loading: null,
-      modalMessage: "Job Created Successfully. Create Another?",
+      modalMessage: "Job Created Successfully. Would you like to create another job role?",
       modalActive: null,
       btnActive: true,
     
@@ -168,9 +175,8 @@ export default {
         "Job_Role_Desc": this.JobRoleDesc,
         "Job_Role_Skills": selected_skillid,
       }
-      console.log(this.selectedSkills)
       this.axios.post('http://localhost:5000/api/jobrole', json).then((response) => {
-          this.modalMessage = response.data.message + " Create Another?"
+          this.modalMessage = response.data.message + " Would you like to create another job role?"
           this.btnActive = true
         }).catch(error => {
             this.modalMessage = error.response.data.message 
