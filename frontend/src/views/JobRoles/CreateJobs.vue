@@ -10,11 +10,22 @@
     <br>
 
     <div v-if="errors.length != 0">
-      <div class="alert alert-danger mb-5" role="alert">
+      <div class="alert alert-danger alert-dismissible fade show mb-5" role="alert">
         <h4>Please check your inputs</h4>
         <ul>
           <li class="m-0" v-for="e in errors" :key="e">{{e}}</li>
         </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+
+    <div v-if="warnings.length != 0">
+      <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
+        <h4>Please check your inputs</h4>
+        <ul>
+          <li class="m-0" v-for="w in warnings" :key="w">{{w}}</li>
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     </div>
 
@@ -101,7 +112,10 @@ export default {
       btnActive: true,
     
       // Errors
-      errors: []
+      errors: [],
+
+      // Warnings
+      warnings: []
     }
   },
   created() {
@@ -137,6 +151,7 @@ export default {
 
     checkForm(){
       this.errors = [];
+      this.warnings = [];
 
       if (this.JobRoleName.trim().length == 0) {
         this.errors.push("Job Role Name is empty! Please enter Job Role Name.")
@@ -150,10 +165,13 @@ export default {
         this.errors.push("No Skills selected! Please select at least 1 skill.")
       }
 
+      if (this.JobRoleDesc.length > 255) {
+        this.warnings.push("Job Description is too long! It should not exceed 255 characters. Please try again!")
+      }
+      console.log(this.warnings)
+
       if (this.errors.length == 0) {
         this.CreateJobRole()
-      } else {
-        console.log(this.errors)
       }
     },
 
