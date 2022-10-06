@@ -23,12 +23,12 @@
         <form @submit.prevent v-on:submit="checkForm">
           <div class="mb-3">
             <label for="JobRoleName" class="form-label">Job Role Name</label>
-            <input type="text" class="form-control form-control-md input-border-color" id="JobRoleName" placeholder="e.g. Software Engineer" v-model="JobRoleName" required>
+            <input type="text" class="form-control form-control-md input-border-color" id="JobRoleName" placeholder="e.g. Software Engineer" v-model="JobRoleName">
           </div>
 
           <div class="mb-3">
             <label for="JobRoleDesc" class="form-label">Job Role Description</label>
-            <textarea class="form-control form-control-md input-border-color" placeholder="e.g. Will be tasked to code the frontend of application." id="floatingTextarea" style="height: 100px;" v-model="JobRoleDesc" required></textarea>
+            <textarea class="form-control form-control-md input-border-color" placeholder="e.g. Will be tasked to code the frontend of application." id="floatingTextarea" style="height: 100px;" v-model="JobRoleDesc"></textarea>
           </div>
 
           <div v-if="boolSkills" class="mb-3">
