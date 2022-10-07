@@ -83,7 +83,6 @@ def create_skill():
         for Course_ID in course_list:
             course_skill = CourseSkill(Course_ID, skill.Skill_ID)
             db.session.add(course_skill)
-            print(course_skill.json())
             db.session.flush()
             
         db.session.commit()
