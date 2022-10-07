@@ -49,4 +49,21 @@ def getstaffbyemail(email):
         "code": 404,
         "message": "No record found"
     }),404
-    
+
+########################################################
+
+#Get Job Role by Status
+@api.route("/jobrole/<string:status>")
+def getjobrolebystatus(status):
+    job_role_list = JobRole.query.filter_by(Job_Role_Status=status).all()
+    if len(job_role_list):
+        return jsonify({
+            "code": 200,
+            "data":{
+                "Job_Role_List": [jon_role.json() for jon_role in job_role_list]
+            }
+        }), 200
+    return jsonify({
+        "code": 404,
+        "message": "There are no available Job Role."
+    }),404
