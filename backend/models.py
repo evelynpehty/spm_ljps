@@ -242,7 +242,7 @@ class LearningJourneyItem(db.Model):
     Learning_Journey_ID = db.Column(db.Integer, db.ForeignKey('learning_journey.Learning_Journey_ID'), primary_key=True)
     #Staff_ID = db.Column(db.Integer, db.ForeignKey('staff.Staff_ID'), primary_key=True)
     #Job_Role_ID = db.Column(db.Integer, db.ForeignKey('job_role.Job_Role_ID'), primary_key=True)
-    Course_ID = db.Column(db.String(20), db.ForeignKey('course.Course_ID'), Primary_key=True)
+    Course_ID = db.Column(db.String(20), db.ForeignKey('course.Course_ID'), primary_key=True)
 
     def __init__(self, Learning_Journey_ID, Course_ID):
         self.Learning_Journey_ID = Learning_Journey_ID
