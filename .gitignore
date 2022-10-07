@@ -1,2 +1,4 @@
 
 backend/config.py
+*.pyc
+*.pyc

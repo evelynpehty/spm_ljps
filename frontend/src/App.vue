@@ -81,7 +81,24 @@ export default {
   
   .input-border-color:focus {
     outline: none !important;
-    border:1px solid #cff5f5 !important;
+    border: 1px solid #cff5f5 !important;
     box-shadow: 0 0 10px #cff5f5 !important;
+  }
+
+  .multiselect__tags {
+    border: 1px solid #cff5f5 !important;
+  }
+
+  .multiselect__tag {
+    background: #5D726A !important;
+  }
+
+  .multiselect__option--highlight {
+    background: #EAE6E4 !important;
+    color: black !important;
+  }
+
+  .multiselect__tag-icon:after {
+      color: white !important;
   }
   </style>
