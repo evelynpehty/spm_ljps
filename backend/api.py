@@ -54,13 +54,27 @@ def getstaffbyemail(email):
 
 """
 Skills
+- Get Skills by ID
 - Get Skills by Status
 """ 
+@api.route("/skill/<int:id>")
+def getskillbyid(id):
+    skill = Skill.query.filter_by(Skill_ID=id).first()
+    if skill:
+        return jsonify({
+            "code": 200,
+            "data": skill.json()
+            
+        }), 200
+    return jsonify({
+        "code": 404,
+        "message": "No such skill record found"
+    }),404
+
 
 @api.route("/skill/<string:status>")
 def getskillbystatus(status):
     skill_list = Skill.query.filter_by(Skill_Status=status).all()
-    #skill_list = Skill.query.all()
     if len(skill_list):
         return jsonify({
             "code": 200,
@@ -78,7 +92,9 @@ def getskillbystatus(status):
 
 """
 Job Role
-- Create
+- Create Job Role
+- Get Job Role by ID
+- Get Job Role by Status
 """
 
 #Create A Job Role
@@ -124,6 +140,20 @@ def createjobrole():
             "message": f'Job Role has been successfully created!'
         }
     ), 201
+    
+@api.route("/jobrole/<int:id>")
+def getjobrolebyid(id):
+    jobrole = JobRole.query.filter_by(Job_Role_ID=id).first()
+    if jobrole:
+        return jsonify({
+            "code": 200,
+            "data": jobrole.json()
+            
+        }), 200
+    return jsonify({
+        "code": 404,
+        "message": "No such jobrole record found"
+    }),404
 
 #Get Job Role by Status
 @api.route("/jobrole/<string:status>")
@@ -133,7 +163,7 @@ def getjobrolebystatus(status):
         return jsonify({
             "code": 200,
             "data":{
-                "Job_Role_List": [jon_role.json() for jon_role in job_role_list]
+                "Job_Role_List": [job_role.json() for job_role in job_role_list]
             }
         }), 200
     return jsonify({
