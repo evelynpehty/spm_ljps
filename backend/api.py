@@ -52,6 +52,11 @@ def getstaffbyemail(email):
 
 ########################################################
 
+"""
+Staff
+- Get job role by status
+"""
+
 #Get Job Role by Status
 @api.route("/jobrole/<string:status>")
 def getjobrolebystatus(status):
