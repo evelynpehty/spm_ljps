@@ -9,7 +9,7 @@ import ViewAllSkills from '../views/Skills/ViewAllSkills.vue'
 import CreateJobs from '../views/JobRoles/CreateJobs.vue'
 import ViewAllJobs from '../views/JobRoles/ViewAllJobs.vue'
 
-import CreateLearningJourney from '../views/LearningJourney/CreateLearningJourney.vue'
+import SelectJobRole from '../views/LearningJourney/SelectJobRoles.vue'
 import ManageLearningJourney from '../views/LearningJourney/ManageAllLearningJourney.vue'
 
 const routes = [
@@ -84,11 +84,11 @@ const routes = [
   },
 
   {
-    path: "/create-learning-journey",
-    name: "CreateLearningJourney",
-    component: CreateLearningJourney,
+    path: "/select-job-role",
+    name: "SelectJobRole",
+    component: SelectJobRole,
     meta: {
-      title: "Create Learning Journey",
+      title: "Select Job Role",
       requiresAuth: true,
     }
   },

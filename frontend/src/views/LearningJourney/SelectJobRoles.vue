@@ -22,7 +22,7 @@ import CollapsibleCard from "/src/components/CollapsibleCard";
 // import StepProgress from 'vue-step-progress';
 
 export default {
-  name: "CreateLearningJourneyPage",
+  name: "SelectJobRolesPage",
 
   components: {
   Loading,
