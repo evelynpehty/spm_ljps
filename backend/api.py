@@ -5,7 +5,7 @@ api.py
 """
 
 from flask import Blueprint, request, jsonify
-from models import db, Role, Staff, JobRole, Skill, JobRoleSkill, Course, CourseSkill
+from models import db, Role, Staff, JobRole, Skill, JobRoleSkill, Course, LearningJourney, LearningJourneyItem
 
 api = Blueprint('api', __name__)
 
@@ -171,4 +171,62 @@ def getjobrolebystatus(status):
         "message": "There are no available Job Role."
     }),404
 
+########################################################
+"""
+Course 
+- Get All Active Course
+"""
 
+@api.route("/course/<string:status>")
+def getcoursebystatus(status):
+    course_list = Course.query.filter_by(Course_Status=status).all()
+    if len(course_list):
+        return jsonify({
+            "code": 200,
+            "data":{
+                "Course_List": [course.json() for course in course_list]
+            }
+        }), 200
+    return jsonify({
+        "code": 404,
+        "message": "There are no available course."
+    }),404
+
+########################################################
+"""
+Learning Journey 
+- Create Learning Journey
+"""
+
+@api.route("/learningjourney", methods=['POST'])
+def createlearningjourney():    
+    data = request.get_json()
+    staffid = data["Staff_ID"]
+    jobroleid = data["Job_Role_ID"]
+
+    lj = LearningJourney(staffid,jobroleid)
+    
+    try: 
+        db.session.add(lj)
+        db.session.commit()
+        
+        course_list = data["Course_List"]
+        for cid in course_list:
+            item = LearningJourneyItem(lj.Learning_Journey_ID, cid)
+            db.session.add(item)
+            db.session.commit()          
+
+    except:
+        return jsonify({
+            "code": 500,
+            "message": "An error occurred creating the learning journey"
+
+        }), 500
+
+    return jsonify(
+        {
+            "code": 201,
+            "data": lj.json(),
+            "message": f'Learning Journey has been successfully created!'
+        }
+    ), 201

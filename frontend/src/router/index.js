@@ -10,6 +10,7 @@ import CreateJobs from '../views/JobRoles/CreateJobs.vue'
 import ViewAllJobs from '../views/JobRoles/ViewAllJobs.vue'
 
 import SelectJobRole from '../views/LearningJourney/SelectJobRoles.vue'
+import SelectSkillCourse from '../views/LearningJourney/SelectSkillCourse.vue'
 import ManageLearningJourney from '../views/LearningJourney/ManageAllLearningJourney.vue'
 
 const routes = [
@@ -91,6 +92,15 @@ const routes = [
       title: "Select Job Role",
       requiresAuth: true,
     }
+  },
+  {
+    path: "/select-skill-course/:jobroleid",
+    name: "SelectSkillCourse",
+    component: SelectSkillCourse,
+    meta: {
+      title: "SelectSkillCourse",
+      requiresAuth: true,
+    },
   },
 
   {
