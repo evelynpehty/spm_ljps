@@ -9,6 +9,9 @@ import ViewAllSkills from '../views/Skills/ViewAllSkills.vue'
 import CreateJobs from '../views/JobRoles/CreateJobs.vue'
 import ViewAllJobs from '../views/JobRoles/ViewAllJobs.vue'
 
+import CreateLearningJourney from '../views/LearningJourney/CreateLearningJourney.vue'
+import ManageLearningJourney from '../views/LearningJourney/ManageAllLearningJourney.vue'
+
 const routes = [
   {
     path: "/",
@@ -79,6 +82,26 @@ const routes = [
       requiresAuth: true,
     }
   },
+
+  {
+    path: "/create-learning-journey",
+    name: "CreateLearningJourney",
+    component: CreateLearningJourney,
+    meta: {
+      title: "Create Learning Journey",
+      requiresAuth: true,
+    }
+  },
+
+  {
+    path: "/manage-learning-journey",
+    name: "ManageLearningJourney",
+    component: ManageLearningJourney,
+    meta: {
+      title: "Manage Learning Journey",
+      requiresAuth: true,
+    }
+  }
 ]
 
 const router = createRouter({
