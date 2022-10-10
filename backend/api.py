@@ -101,3 +101,23 @@ def create_skill():
             "data": skill.json()
         }
     ), 201  
+
+"""
+Course 
+- Get All Active Course
+"""
+
+@api.route("/course/<string:status>")
+def getcoursebystatus(status):
+    course_list = Course.query.filter_by(Course_Status=status).all()
+    if len(course_list):
+        return jsonify({
+            "code": 200,
+            "data":{
+                "Course_List": [course.json() for course in course_list]
+            }
+        }), 200
+    return jsonify({
+        "code": 404,
+        "message": "There are no available course."
+    }),404
