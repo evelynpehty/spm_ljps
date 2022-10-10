@@ -170,7 +170,7 @@ export default {
       }
       console.log(this.warnings)
 
-      if (this.errors.length == 0) {
+      if (this.errors.length == 0 && this.warnings.length == 0) {
         this.CreateJobRole()
       }
     },
