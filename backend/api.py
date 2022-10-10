@@ -57,7 +57,8 @@ Skills
 - Create Skill 
 """ 
 #Create Skills
-@api.route("/skill/create", methods=['POST'])
+
+@api.route("/skill", methods=['POST'])
 def create_skill():
     data = request.get_json()
 
