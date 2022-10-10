@@ -51,16 +51,21 @@ export default {
     created(){
       this.loading = true
       this.axios.get("http://127.0.0.1:5000/api/jobrole/Active").then((response)=>{
-        console.log(response.data.Job_Role_List)
-        for (let role in response.data.Job_Role_List){
-          console.log(role)
-          this.roleData.append(role.Job_Role_Name,role.Job_Role_Desc)
+        //console.log(response.data.data.Job_Role_List)
+        for (let i =0; i < response.data.data.Job_Role_List.length; i++){
+          console.log(response.data.data.Job_Role_List[i])
+          console.log(response.data.data.Job_Role_List[i].Job_Role_Name)
+          console.log(response.data.data.Job_Role_List[i].Job_Role_Desc)
+          this.roleData.push({
+            "Title": response.data.data.Job_Role_List[i].Job_Role_Name,
+            "Desc": response.data.data.Job_Role_List[i].Job_Role_Desc,
+          })
         }
         console.log(this.roleData)
       }).catch(error=>{
-        console.log(error.code)
-        if (error.code == "404"){
-          this.error = error.message
+        console.log(error.response.data)
+        if (error.response.data.code == "404"){
+          this.error = error.response.data.message
         }
         else {
           this.error = "Error occured in retrieving Job Role Data"
@@ -91,5 +96,11 @@ th {
 
 tr:nth-child(even) {
   background-color: #f2f2f2;
+}
+
+table {
+  text-align: center;
+  border: 1px solid black;
+
 }
 </style>
