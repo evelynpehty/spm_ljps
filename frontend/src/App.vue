@@ -54,6 +54,11 @@ export default {
   div {
     font-family: 'ShareFontRegular', Arial, Helvetica, sans-serif;
   }
+
+  .btn-primary {
+    background-color: #798E97 !important;
+    border-color:  #798E97 !important;
+  }
   
   .btn-success {
     background-color: #5D726A !important;
