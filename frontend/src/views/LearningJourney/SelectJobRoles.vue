@@ -79,7 +79,7 @@ export default {
 
   methods: {
     btnNext(id){
-      // console.log(id)
+      this.loading=true
       this.axios.get("http://localhost:5000/api/learningjourney/"+this.$store.state.userid).then((response) => {
         this.staffLearningJourney = response.data.data.LearningJourney_List
         for (var lj in this.staffLearningJourney) {

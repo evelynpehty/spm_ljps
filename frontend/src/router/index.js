@@ -113,7 +113,7 @@ const routes = [
       title: "Manage Learning Journey",
       requiresAuth: true,
     }
-  }
+  },
 
   {
     path: "/update-job-role/:jobroleid",
@@ -124,7 +124,6 @@ const routes = [
       requiresAuth: true,
     },
   },
-
 ]
 
 const router = createRouter({
