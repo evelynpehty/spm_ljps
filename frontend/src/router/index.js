@@ -8,6 +8,7 @@ import ViewAllSkills from '../views/Skills/ViewAllSkills.vue'
 
 import CreateJobs from '../views/JobRoles/CreateJobs.vue'
 import ViewAllJobs from '../views/JobRoles/ViewAllJobs.vue'
+import UpdateJobRole from '../views/JobRoles/UpdateJobRole.vue'
 
 const routes = [
   {
@@ -78,6 +79,15 @@ const routes = [
       title: "View All Jobs",
       requiresAuth: true,
     }
+  },
+  {
+    path: "/update-job-role/:jobroleid",
+    name: "UpdateJobRole",
+    component: UpdateJobRole,
+    meta: {
+      title: "UpdateJobRole",
+      requiresAuth: true,
+    },
   },
 ]
 

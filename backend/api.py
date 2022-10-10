@@ -133,7 +133,7 @@ def getjobrolebystatus(status):
         return jsonify({
             "code": 200,
             "data":{
-                "Job_Role_List": [jon_role.json() for jon_role in job_role_list]
+                "Job_Role_List": [job_role.json() for job_role in job_role_list]
             }
         }), 200
     return jsonify({
