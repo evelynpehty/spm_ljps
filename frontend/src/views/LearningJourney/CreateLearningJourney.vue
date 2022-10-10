@@ -6,29 +6,42 @@
             <h2 class="title">Choose Your Course</h2>
             <p class="title">You may click on the course name for more details of the course</p>
         </div>
-        <div v-for="value, key in final_arr" :key="key" class="accordion" id="accordionExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" style="background-color:#80968a; color: white" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse'+key" aria-expanded="true" :aria-controls="'collapse'+key" >
-                    {{value.Skill_Item.Skill_Name}}
-                </button>
-                </h2>
-                <div :id="'collapse'+key" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <div v-for="course_value, course_key in value.Course_List" :key="course_key" class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" :id="course_value.Course_ID" :value="course_value.Course_ID" v-model="selected_course" :disabled="course_value.disabled">
-                            <label class="form-check-label" @click="OpenModal(course_value)">{{course_value.Course_Name}}</label> 
-                            <span class="ms-1 badge" style="background-color:#80968a">{{course_value.registration_status}}</span>
+        <div v-if="final_arr.length != 0">
+            <div v-for="value, key in final_arr" :key="key" class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" style="background-color:#80968a; color: white" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse'+key" aria-expanded="true" :aria-controls="'collapse'+key" >
+                        {{value.Skill_Item.Skill_Name}}
+                    </button>
+                    </h2>
+                    <div :id="'collapse'+key" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div v-if="(value.Course_List).length !=0">
+                                <div v-for="course_value, course_key in value.Course_List" :key="course_key" class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" :id="course_value.Course_ID" :value="course_value.Course_ID" v-model="selected_course" :disabled="course_value.disabled">
+                                    <label class="form-check-label" @click="OpenModal(course_value)">{{course_value.Course_Name}}</label> 
+                                    <span class="ms-1 badge" style="background-color:#80968a">{{course_value.registration_status}}</span>
+                                </div>
+                            </div>
+                            <div v-else>
+                                <h3> No Available Courses </h3>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row" style="margin-top:20px">
+            <div class="row" style="margin-top:20px">
             <div class="d-grid mb-2">
                <button type="button" class="btn btn-success p-2" @click="CreateLJ()">Create Learning Journey</button>
             </div>
         </div>
+        </div>
+        <div v-else>
+            <h3> No Available Skills </h3>
+        </div>
+        
+        
     </div>
 </template>
 
