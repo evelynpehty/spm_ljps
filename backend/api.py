@@ -99,7 +99,9 @@ def create_skill():
     return jsonify(
         {
             "code": 201,
-            "data": skill.json()
+            "data": skill.json(),
+            "message": "Skill has been successfully created!'
+
         }
     ), 201  
 
