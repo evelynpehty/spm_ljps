@@ -5,7 +5,7 @@ api.py
 """
 
 from flask import Blueprint, request, jsonify
-from models import db, Role, Staff, JobRole, Skill, JobRoleSkill, Course, LearningJourney, LearningJourneyItem
+from models import db, Role, Staff, JobRole, Skill, JobRoleSkill, Course, LearningJourney, LearningJourneyItem, Registration
 
 api = Blueprint('api', __name__)
 
@@ -196,6 +196,7 @@ def getcoursebystatus(status):
 """
 Learning Journey 
 - Create Learning Journey
+- Get Learning Journey by Staff
 """
 
 @api.route("/learningjourney", methods=['POST'])
@@ -230,3 +231,41 @@ def createlearningjourney():
             "message": f'Learning Journey has been successfully created!'
         }
     ), 201
+    
+@api.route("/learningjourney/<int:staffid>")
+def getlearningjourneybystaff(staffid):
+    learningjourney_list = LearningJourney.query.filter_by(Staff_ID=staffid).all()
+    if len(learningjourney_list):
+        return jsonify({
+            "code": 200,
+            "data":{
+                "LearningJourney_List": [lj.json() for lj in learningjourney_list]
+            }
+        }), 200
+    return jsonify({
+        "code": 404,
+        "message": "No Available Learning Journey"
+    }),404  
+    
+########################################################
+"""
+Registration 
+- Get Course Registration by staffid
+"""
+
+@api.route("/registration/<int:staffid>")
+def getregistrationbystaff(staffid):
+    registration_list = Registration.query.filter_by(Staff_ID=staffid).all()
+    if len(registration_list):
+        return jsonify({
+            "code": 200,
+            "data":{
+                "Registration_List": [r.json() for r in registration_list]
+            }
+        }), 200
+    return jsonify({
+        "code": 404,
+        "message": "There are no registration"
+    }),404
+
+########################################################
