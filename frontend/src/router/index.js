@@ -10,6 +10,10 @@ import CreateJobs from '../views/JobRoles/CreateJobs.vue'
 import ViewAllJobs from '../views/JobRoles/ViewAllJobs.vue'
 import UpdateJobRole from '../views/JobRoles/UpdateJobRole.vue'
 
+import SelectJobRole from '../views/LearningJourney/SelectJobRoles.vue'
+import CreateLearningJourney from '../views/LearningJourney/CreateLearningJourney.vue'
+import ManageLearningJourney from '../views/LearningJourney/ManageAllLearningJourney.vue'
+
 const routes = [
   {
     path: "/",
@@ -80,6 +84,37 @@ const routes = [
       requiresAuth: true,
     }
   },
+
+
+  {
+    path: "/select-job-role",
+    name: "SelectJobRole",
+    component: SelectJobRole,
+    meta: {
+      title: "Select Job Role",
+      requiresAuth: true,
+    }
+  },
+  {
+    path: "/create-learning-journey/:jobroleid",
+    name: "CreateLearningJourney",
+    component: CreateLearningJourney,
+    meta: {
+      title: "CreateLearningJourney",
+      requiresAuth: true,
+    },
+  },
+
+  {
+    path: "/manage-learning-journey",
+    name: "ManageLearningJourney",
+    component: ManageLearningJourney,
+    meta: {
+      title: "Manage Learning Journey",
+      requiresAuth: true,
+    }
+  }
+
   {
     path: "/update-job-role/:jobroleid",
     name: "UpdateJobRole",
@@ -89,6 +124,7 @@ const routes = [
       requiresAuth: true,
     },
   },
+
 ]
 
 const router = createRouter({

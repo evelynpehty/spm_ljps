@@ -210,7 +210,7 @@ export default {
 }
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
-<style>
+<style lang="scss" scoped>
 h2 {
    margin: 0px !important;
 }

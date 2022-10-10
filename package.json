@@ -3,6 +3,7 @@
     "@coreui/coreui-pro": "^4.3.4",
     "vue-multi-select": "^4.6.0",
     "vue-multiselect": "^3.0.0-alpha.2",
+    "vue-step-progress": "^0.3.8",
     "vuetify": "^2.6.10"
   }
 }
