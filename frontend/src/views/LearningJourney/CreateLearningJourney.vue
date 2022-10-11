@@ -18,7 +18,7 @@
                         <div class="accordion-body">
                             <div v-if="(value.Course_List).length !=0">
                                 <div v-for="course_value, course_key in value.Course_List" :key="course_key" class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" :id="course_value.Course_ID" :value="course_value.Course_ID" v-model="selected_course" :disabled="course_value.disabled">
+                                    <input class="form-check-input" type="checkbox" :id="course_value.Course_ID" :value="course_value.Course_ID" v-model="selected_course">
                                     <label class="form-check-label" @click="OpenModal(course_value)">{{course_value.Course_Name}}</label> 
                                     <span class="ms-1 badge" style="background-color:#80968a">{{course_value.registration_status}}</span>
                                 </div>
@@ -126,10 +126,11 @@ export default {
                                                 for(var r of this.staff_registration_arr){  //check if courses are registered
                                                     if(r.Course_ID == cid.Course_ID){  
                                                         var regi_status = r.Reg_Status
-                                                        if (regi_status != "Rejected" & !this.selected_course.includes(r.Course_ID)){ 
-                                                            //if registered or on waitlist, retrieve the reg_status and completion_status
-                                                            this.selected_course.push(r.Course_ID) //automatically check the checkbox
-                                                            course_item["disabled"] = true //disabled selection
+                                                        if (regi_status != "Rejected" & !this.selected_course.includes(r.Course_ID)){ //if registered or on waitlist, retrieve the reg_status and completion_status
+                                                            
+                                                            //this.selected_course.push(r.Course_ID) 
+                                                            //course_item["disabled"] = true 
+
                                                             var completion_status = r.Completion_Status //concat regstatus and completion status together to display in badge
                                                             var text = regi_status
                                                             if(completion_status != null){
