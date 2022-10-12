@@ -100,7 +100,7 @@ def create_skill():
         {
             "code": 201,
             "data": skill.json(),
-            "message": "Skill has been successfully created!'
+            "message": "Skill has been successfully created!"
 
         }
     ), 201  
