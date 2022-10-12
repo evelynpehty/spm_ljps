@@ -55,6 +55,8 @@ def getstaffbyemail(email):
 """
 Skills
 - Create Skill 
+- Get Skills by ID
+- Get Skills by Status
 """ 
 #Create Skills
 
@@ -105,32 +107,6 @@ def create_skill():
         }
     ), 201  
 
-"""
-Course 
-- Get All Active Course
-"""
-
-@api.route("/course/<string:status>")
-def getcoursebystatus(status):
-    course_list = Course.query.filter_by(Course_Status=status).all()
-    if len(course_list):
-        return jsonify({
-            "code": 200,
-            "data":{
-                "Course_List": [course.json() for course in course_list]
-            }
-        }), 200
-    return jsonify({
-        "code": 404,
-        "message": "There are no available course."
-    }),404
-########################################################   
-
-"""
-Skills
-- Get Skills by ID
-- Get Skills by Status
-""" 
 @api.route("/skill/<int:id>")
 def getskillbyid(id):
     skill = Skill.query.filter_by(Skill_ID=id).first()
