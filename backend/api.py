@@ -5,7 +5,7 @@ api.py
 """
 
 from flask import Blueprint, request, jsonify
-from models import db, Role, Staff, JobRole, Skill, JobRoleSkill, Course, LearningJourney, LearningJourneyItem, Registration
+from models import db, Role, Staff, JobRole, Skill, JobRoleSkill, Course, CourseSkill, LearningJourney, LearningJourneyItem, Registration
 
 api = Blueprint('api', __name__)
 
