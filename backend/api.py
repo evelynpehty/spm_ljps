@@ -57,6 +57,7 @@ Skills
 - Create Skill 
 - Get Skills by ID
 - Get Skills by Status
+- Get All Skills (SPM8 - View Job Role Details, need to get all skills information)
 """ 
 #Create Skills
 
@@ -137,6 +138,21 @@ def getskillbystatus(status):
         "message": "There are no available skill."
     }),404
     
+# Get All Skills (SPM8 - View Job Role Details, need to get all skills information)
+@api.route("/skill")
+def getallskills():
+    skill_list = Skill.query.all()
+    if len(skill_list):
+        return jsonify({
+            "code": 200,
+            "data":{
+                "Skill_List": [skill.json() for skill in skill_list]
+            }
+        }), 200
+    return jsonify({
+        "code": 404,
+        "message": "There are no available skill."
+    }),404
 
 ########################################################
 
