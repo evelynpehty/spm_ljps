@@ -4,7 +4,7 @@
   <div class="container-fluid">
     <div class="row" style="margin-top:80px">
       <h2 class="title">View All Roles</h2>
-      <p class="title">View all available job role and their respective job descriptions</p>
+      <p class="title">View all available job roles and their respective details</p>
     </div>
   </div>
     <br>
@@ -16,12 +16,17 @@
             <tr>
                 <th style = "text-align: center;">Job Role Title</th>
                 <th style = "text-align: center;">Job Role Description</th>
-                <th></th>
+                <th style = "text-align: center;">Job Role Status</th>
+                <th style = "text-align: center;">Actions</th>
             </tr>
             <tr v-for = "val in roleData" :key = "val.Title">
               <td>{{val.Title}}</td>
               <td>{{val.Desc}}</td>
-              <td><button type="button" class="btn btn-outline-success" @click="UpdateJobRole(val.JobRoleID)">Update</button></td>
+              <td>{{val.Status}}</td>
+              <td>
+                <button type="button" class="btn btn-outline-success" @click="UpdateJobRole(val.JobRoleID)" style = "margin-right: 20px;">Update</button>
+                <button type="button" class="btn btn-outline-success" @click="ViewJobDetails(val.JobRoleID)" style = "margin-left: 20px;">View Details</button>
+              </td>
             </tr>
           </table>
     </div>  
@@ -51,13 +56,14 @@ export default {
     },
     created(){
       this.loading = true
-      this.axios.get("http://127.0.0.1:5000/api/jobrole/Active").then((response)=>{
+      this.axios.get("http://127.0.0.1:5000/api/jobrole").then((response)=>{
         //console.log(response.data.data.Job_Role_List)
         for (let i =0; i < response.data.data.Job_Role_List.length; i++){
           this.roleData.push({
             "JobRoleID": response.data.data.Job_Role_List[i].Job_Role_ID,
             "Title": response.data.data.Job_Role_List[i].Job_Role_Name,
             "Desc": response.data.data.Job_Role_List[i].Job_Role_Desc,
+            "Status": response.data.data.Job_Role_List[i].Job_Role_Status
           })
         }
       }).catch(error=>{
@@ -74,6 +80,9 @@ export default {
     methods:{
       UpdateJobRole(jobroleid){
         this.$router.push({name:"UpdateJobRole", params: { jobroleid: jobroleid}})
+      },
+      ViewJobDetails(jobroleid){
+        this.$router.push({name: "ViewJobDetails", params: {jobroleid : jobroleid}})
       }
     }
 }
@@ -100,9 +109,17 @@ tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
+
 table {
   text-align: center;
   border: 1px solid black;
-
+  border-spacing: 0px;
+  border-width: 0px;
+  padding: 0px;
+  border-width: 0px;
 }
+
+
+
+
 </style>
