@@ -145,6 +145,7 @@ Job Role
 - Create Job Role
 - Get Job Role by ID
 - Get Job Role by Status
+- SPM-47: View All Job Roles
 """
 
 #Create A Job Role
@@ -209,6 +210,22 @@ def getjobrolebyid(id):
 @api.route("/jobrole/<string:status>")
 def getjobrolebystatus(status):
     job_role_list = JobRole.query.filter_by(Job_Role_Status=status).all()
+    if len(job_role_list):
+        return jsonify({
+            "code": 200,
+            "data":{
+                "Job_Role_List": [job_role.json() for job_role in job_role_list]
+            }
+        }), 200
+    return jsonify({
+        "code": 404,
+        "message": "There are no available Job Role."
+    }),404
+
+#Get Job Role Details (SPM-47: View All Job Roles)
+@api.route("/jobrole")
+def getalljobrole():
+    job_role_list = JobRole.query.all()
     if len(job_role_list):
         return jsonify({
             "code": 200,
