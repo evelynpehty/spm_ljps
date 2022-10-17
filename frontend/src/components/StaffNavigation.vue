@@ -14,7 +14,7 @@
             <a class="nav-link dropdown-toggle mx-3" href="#" role="button" data-bs-toggle="dropdown">Learning Journey</a>
             <ul class="dropdown-menu mx-3">
               <li><a class="dropdown-item" href="/select-job-role">Create Learning Journey</a></li>
-              <li><a class="dropdown-item" href="/manage-learning-journey">Manage Learning Journey</a></li>
+              <li><a class="dropdown-item" href="/view-learning-journey">View Learning Journey</a></li>
             </ul>
           </li>
         </ul>

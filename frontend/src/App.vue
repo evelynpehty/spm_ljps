@@ -59,10 +59,20 @@ export default {
     background-color: #798E97 !important;
     border-color:  #798E97 !important;
   }
+
+  .btn-warning {
+    background-color: #C1CDD1 !important;
+    border-color: #C1CDD1 !important;
+  }
   
   .btn-success {
     background-color: #5D726A !important;
     border-color: #5D726A !important;
+  }
+
+  .btn-danger {
+    background-color: #AF8171 !important;
+    border-color: #AF8171 !important;
   }
   
   .btn-outline-success {
