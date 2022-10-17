@@ -10,22 +10,20 @@
     <br>
 
     <div v-if="errors.length != 0">
-      <div class="alert alert-danger alert-dismissible fade show mb-5" role="alert">
+      <div class="alert alert-danger show mb-5" role="alert">
         <h4>Please check your inputs</h4>
         <ul>
           <li class="m-0" v-for="e in errors" :key="e">{{e}}</li>
         </ul>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     </div>
 
     <div v-if="warnings.length != 0">
-      <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
+      <div class="alert alert-warning show mb-5" role="alert">
         <h4>Please check your inputs</h4>
         <ul>
           <li class="m-0" v-for="w in warnings" :key="w">{{w}}</li>
         </ul>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     </div>
 
