@@ -41,6 +41,9 @@
 </script>
 
 <style lang="scss" scoped>
+.card {
+    padding: 0px !important;
+}
 .card-header {
     background-color: #AF8171 !important;
     border: none;
