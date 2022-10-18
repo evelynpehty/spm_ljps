@@ -43,14 +43,14 @@
 import Loading from "/src/components/Loading";
 
 export default {
-    name: "ViewAllSkillsPage",
+    name: "ViewAllSkills",
     components: {
       Loading
     },
 
     data(){
       return {
-        skillData: [], // list of {Title: Job_Role_Name, Desc: Job_Role_Desc}
+        skillData: [], 
         error: "",
         loading: null,
       }
@@ -58,7 +58,6 @@ export default {
     created(){
       this.loading = true
       this.axios.get("http://127.0.0.1:5000/api/skill").then((response)=>{
-        console.log(response.data.data.Skill_List)
         for (let i =0; i < response.data.data.Skill_List.length; i++){
           this.skillData.push({
             "skillID": response.data.data.Skill_List[i].Skill_ID,
@@ -90,11 +89,10 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
 
-<style>
+<style lang="scss" scoped>
 h2 {
    margin: 0px !important;
 }
-
 .title {
   text-align: center;
 }

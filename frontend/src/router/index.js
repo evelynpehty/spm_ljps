@@ -58,7 +58,7 @@ const routes = [
   },
 
   {
-    path: "/view-all-skills",
+    path: "/view-all-skills/",
     name: "ViewAllSkills",
     component: ViewAllSkills,
     meta: {
@@ -68,7 +68,7 @@ const routes = [
   },
 
   {
-    path: "/view-skill-details",
+    path: "/view-skill-details/:skillID",
     name: "ViewSkillDetails",
     component: ViewSkillDetails,
     meta: {

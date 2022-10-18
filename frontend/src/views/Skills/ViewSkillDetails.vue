@@ -109,16 +109,8 @@ export default {
     created() {
         this.loading = true;
 
-        // -----> ViewAllSkills.vue needs a vue method
-        // ViewSkillDetails(skillID){
-        //     this.$router.push({name: "ViewSkillDetails", params: {skillID : skillID}})
-        // }
-        //------> and a button 
-        //<button type="button" class="btn btn-outline-success" @click="ViewSkillDetails(val.skillID)" style = "margin-left: 20px;">View Details</button>
+        var skillID = this.$route.params.skillID 
 
-        // var skillID = this.$route.params.skillID 
-        var skillID = 10; //for testing
-        
         this.axios.get("http://127.0.0.1:5000/api/skill/" + skillID).then((response) => {
             var apiData = response.data.data
 
@@ -177,7 +169,7 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
 
-<style>
+<style lang="scss" scoped>
 h2 {
    margin: 0px !important;
 }
@@ -199,6 +191,5 @@ border-width: 0px;
 padding-top: 10px;
 margin-bottom: 50px;
 }
-
 
 </style>
