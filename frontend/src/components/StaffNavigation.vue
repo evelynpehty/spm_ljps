@@ -8,13 +8,13 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link mx-2" href="/StaffMain">Home</a>
+            <a class="nav-link mx-3" href="/StaffMain">Home</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle mx-3" href="#" role="button" data-bs-toggle="dropdown">Learning Journey</a>
             <ul class="dropdown-menu mx-3">
               <li><a class="dropdown-item" href="/select-job-role">Create Learning Journey</a></li>
-              <li><a class="dropdown-item" href="/manage-learning-journey">Manage Learning Journey</a></li>
+              <li><a class="dropdown-item" href="/view-learning-journey">View Learning Journey</a></li>
             </ul>
           </li>
         </ul>

@@ -208,6 +208,7 @@ def createjobrole():
         }
     ), 201
     
+# Get Job Role by Job_Role_ID    
 @api.route("/jobrole/<int:id>")
 def getjobrolebyid(id):
     jobrole = JobRole.query.filter_by(Job_Role_ID=id).first()
@@ -257,8 +258,24 @@ def getalljobrole():
 ########################################################
 """
 Course 
+- Get All Course
 - Get All Active Course
 """
+
+@api.route("/course")
+def getAllcourse():
+    course_list = Course.query.all()
+    if len(course_list):
+        return jsonify({
+            "code": 200,
+            "data":{
+                "Course_List": [course.json() for course in course_list]
+            }
+        }), 200
+    return jsonify({
+        "code": 404,
+        "message": "There are no course."
+    }),404
 
 @api.route("/course/<string:status>")
 def getcoursebystatus(status):
@@ -280,6 +297,7 @@ def getcoursebystatus(status):
 Learning Journey 
 - Create Learning Journey
 - Get Learning Journey by Staff
+- Get Learning Journey by Id
 """
 
 @api.route("/learningjourney", methods=['POST'])
@@ -329,6 +347,20 @@ def getlearningjourneybystaff(staffid):
         "code": 404,
         "message": "No Available Learning Journey"
     }),404  
+    
+@api.route("/learningjourneybyid/<int:id>")
+def getlearningjourneybyid(id):
+    lj = LearningJourney.query.filter_by(Learning_Journey_ID=id).first()
+    if lj:
+        return jsonify({
+            "code": 200,
+            "data": lj.json()
+            
+        }), 200
+    return jsonify({
+        "code": 404,
+        "message": "No such learning journey found"
+    }),404 
     
 ########################################################
 """
