@@ -1,11 +1,20 @@
-# spm_ljps
+# Learning Journey Planning System
  
-### packages to install for backend
-- npm install flask
-- npm install flask-cors
+### to set up backend
+- python -m pip install -U Flask
+- python -m pip install -U flask-cors
+- python -m pip install -U Flask-SQLAlchemy
+- python -m pip install mysql-connector-python
 
 ### to set up frontend
 - npm install
+- npm install vue-multiselect@next
 
-### to run frontend
-- npm run serve
+### to run backend successfully
+1. get and include onfig.py file
+2. cd backend
+3. python appserver.py
+
+### to run frontend successfully (ensure that backend is running)
+1. cd frontend
+2. npm run serve
