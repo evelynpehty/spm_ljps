@@ -60,7 +60,6 @@ Skills
 - Get All Skills (SPM8 - View Job Role Details, need to get all skills information)
 """ 
 #Create Skills
-
 @api.route("/skill", methods=['POST'])
 def create_skill():
     data = request.get_json()
@@ -108,6 +107,7 @@ def create_skill():
         }
     ), 201  
 
+#Get Skill by ID
 @api.route("/skill/<int:id>")
 def getskillbyid(id):
     skill = Skill.query.filter_by(Skill_ID=id).first()
@@ -122,7 +122,7 @@ def getskillbyid(id):
         "message": "No such skill record found"
     }),404
 
-
+#Get all Skills by status
 @api.route("/skill/<string:status>")
 def getskillbystatus(status):
     skill_list = Skill.query.filter_by(Skill_Status=status).all()
@@ -259,7 +259,8 @@ def getalljobrole():
 """
 Course 
 - Get All Course
-- Get All Active Course
+- Get Course by ID
+- Get Course by Status
 """
 
 @api.route("/course")
@@ -276,7 +277,26 @@ def getAllcourse():
         "code": 404,
         "message": "There are no course."
     }),404
+    
+    
+#Get Course by ID - needed for View Skill Details
+#need to do route course/id as courseid is string eg. COR001, conflicts with /course/<string:status>   
+@api.route("/course/id/<string:id>")
+def getjobcoursebyid(id):
+    course = Course.query.filter_by(Course_ID=id).first()
 
+    if course:
+        return jsonify({
+            "code": 200,
+            "data": course.json()  
+        }), 200
+
+    return jsonify({
+        "code": 404,
+        "message": "No such course record found"
+    }), 404
+
+#Get course by status
 @api.route("/course/<string:status>")
 def getcoursebystatus(status):
     course_list = Course.query.filter_by(Course_Status=status).all()

@@ -5,6 +5,7 @@ import HrMain from '../views/HrMain.vue'
 
 import CreateSkills from '../views/Skills/CreateSkills.vue'
 import ViewAllSkills from '../views/Skills/ViewAllSkills.vue'
+import ViewSkillDetails from '../views/Skills/ViewSkillDetails.vue'
 
 import CreateJobs from '../views/JobRoles/CreateJobs.vue'
 import ViewAllJobs from '../views/JobRoles/ViewAllJobs.vue'
@@ -58,11 +59,21 @@ const routes = [
   },
 
   {
-    path: "/view-all-skills",
+    path: "/view-all-skills/",
     name: "ViewAllSkills",
     component: ViewAllSkills,
     meta: {
       title: "View All Skills",
+      requiresAuth: true,
+    }
+  },
+
+  {
+    path: "/view-skill-details/:skillID",
+    name: "ViewSkillDetails",
+    component: ViewSkillDetails,
+    meta: {
+      title: "View Skill Details",
       requiresAuth: true,
     }
   },
