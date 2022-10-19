@@ -1,8 +1,6 @@
 <template>
     <Loading v-show="loading" />
-
     <div class="container">
-
         <div v-if="error.length == 0">
 
             <div class="row" style="margin-top: 10%">
@@ -49,7 +47,6 @@
                     </table>
                 </div>
             </div>
-
             <div class="row">
                 <div v-if="jobRoleIDs.length == 0">
                     <h2 class="title"> No Available Job Roles for this skill </h2>
@@ -78,7 +75,9 @@
         </div>
 
         <div v-else>
-            <h2 class="title">{{error}}</h2>
+            <div class="row" style="margin-top:100px">
+                <h1 style = "text-align: center;">{{this.error}}</h1> 
+            </div>
         </div>
 
     </div>
@@ -128,10 +127,10 @@ export default {
             }
 
         }).catch(error => {
-            if (error.response.data.data.code == "404"){
+            if (error.response.data.code == "404"){
                 this.error = error.response.data.message
             } else {
-            this.error = "Error occured in retrieving Skills Data"
+                this.error = "Error occured in retrieving Skills Data"
             }
 
         }).finally(() => {
@@ -150,16 +149,15 @@ export default {
                 for (var r of response) {
                     this.courseList.push(r.data.data)
                 }
+            }).finally(()=>{
+                Promise.all(rolePromises).then(response => {
+                    for (var r of response) {
+                        this.jobRoleList.push(r.data.data)
+                    }
+                }).finally(()=>{
+                    this.loading = false
+                })
             })
-
-            Promise.all(rolePromises).then(response => {
-                for (var r of response) {
-                    this.jobRoleList.push(r.data.data)
-                }
-            })
-
-            this.loading = false
-
         })
 
     }
