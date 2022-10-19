@@ -121,7 +121,6 @@ export default {
                 for (let i=0; i<apiData.Course_List.length; i++) {
                     this.courseIDs.push(apiData.Course_List[i].Course_ID)
                 }
-
                 for (let i=0; i<apiData.Job_List.length; i++) {
                 this.jobRoleIDs.push(apiData.Job_List[i].Job_Role_ID)
                 }
@@ -150,16 +149,16 @@ export default {
                 for (var r of response) {
                     this.courseList.push(r.data.data)
                 }
+
+            }).finally(()=>{
+                Promise.all(rolePromises).then(response => {
+                    for (var r of response) {
+                        this.jobRoleList.push(r.data.data)
+                    }
+                }).finally(()=>{
+                    this.loading = false
+                })
             })
-
-            Promise.all(rolePromises).then(response => {
-                for (var r of response) {
-                    this.jobRoleList.push(r.data.data)
-                }
-            })
-
-            this.loading = false
-
         })
 
     }
