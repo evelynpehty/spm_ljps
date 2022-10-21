@@ -67,7 +67,8 @@ class Course(db.Model):
     Course_Type = db.Column(db.String(10), nullable=False)
     Course_Category = db.Column(db.String(50), nullable=True)
     
-    def __init__(self, Course_Name, Course_Desc, Course_Status, Course_Type, Course_Category):
+    def __init__(self, Course_ID, Course_Name, Course_Desc, Course_Status, Course_Type, Course_Category):
+        self.Course_ID = Course_ID
         self.Course_Name = Course_Name
         self.Course_Desc = Course_Desc
         self.Course_Status = Course_Status
@@ -251,5 +252,6 @@ class LearningJourneyItem(db.Model):
     # specify how to represent our book object as a JSON string
     def json(self):
         return {
+                "Learning_Journey_ID": self.Learning_Journey_ID,
                 "Course_ID": self.Course_ID
             }
