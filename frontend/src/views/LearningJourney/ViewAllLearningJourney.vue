@@ -79,20 +79,18 @@ export default {
       this.loading = true
       this.axios.get("http://localhost:5000/api/learningjourney/"+this.$store.state.userid).then((response) => {
         this.tempallLearningJourneyList = response.data.data.LearningJourney_List
-
         for(var i of this.tempallLearningJourneyList){
             (this.promises).push(this.axios.get("http://localhost:5000/api/jobrole/"+i.Job_Role_ID))
           }
       }).catch(error => {
         if (error.response.data.code == "404") {
-            console.log("Error2")
             this.allLearningJourneyList = []
           }
         }).finally(() => {
-          //let promises = []
-
           Promise.all(this.promises).then(responses => {
+            console.log(responses)
             for(var r in responses){
+              console.log(responses[r])
               this.tempallLearningJourneyList[r]["Job_Role_Name"]= responses[r].data.data.Job_Role_Name
             }
             this.allLearningJourneyList = this.tempallLearningJourneyList
