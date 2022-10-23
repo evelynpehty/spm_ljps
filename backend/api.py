@@ -318,6 +318,7 @@ Learning Journey
 - Create Learning Journey
 - Get Learning Journey by Staff
 - Get Learning Journey by Id
+- Update Learning Journey (add or delete courses)
 """
 
 @api.route("/learningjourney", methods=['POST'])
@@ -381,6 +382,59 @@ def getlearningjourneybyid(id):
         "code": 404,
         "message": "No such learning journey found"
     }),404 
+
+
+@api.route("/learningjourneyitem/<int:id>", methods=['POST'])
+def addcoursetolearningjourney(id):
+    data = request.json()
+    course_list = data["Course_List"]        
+
+    try: 
+        for cid in course_list:
+            item = LearningJourneyItem(id, cid)
+            db.session.add(item)
+            db.session.commit() 
+        
+    except:
+        return jsonify({
+            "code": 500,
+            "message": "An error occurred adding course(s) to selected learning journey"
+
+        }), 500
+
+    return jsonify(
+        {
+            "code": 201,
+            "message": f'Course(s) have been successfully added to selected learning journey!'
+        }
+    ), 201
+
+
+@api.route("/learningjourneyitem/<int:id>", methods=['DELETE'])
+def deletecoursefromlearningjourney(id):
+    data = request.json()
+    course_list = data["Course_List"]        
+
+    try: 
+        for cid in course_list:
+            item = LearningJourneyItem(id, cid)
+            db.session.delete(item)
+            db.session.commit() 
+        
+    except:
+        return jsonify({
+            "code": 500,
+            "message": "An error occurred deleting course(s) from selected learning journey"
+
+        }), 500
+
+    return jsonify(
+        {
+            "code": 200,
+            "message": f'Course(s) have been successfully deleted from selected learning journey!'
+        }
+    ), 200
+
     
 ########################################################
 """
