@@ -32,27 +32,22 @@ export default {
 
 <style lang="scss">
   @font-face {
-  font-family: "ShareFontRegular";
-  src: url("assets/fonts/share.regular.ttf");
+  font-family: "ProductSansBold";
+  src: url("assets/fonts/Product-Sans-Bold.ttf");
   }
-  
+
   @font-face {
-  font-family: "ShareFontItalic";
-  src: url("assets/fonts/share.italic.ttf");
-  }
-  
-  @font-face {
-  font-family: "ShareFontBold";
-  src: url("assets/fonts/share.bold.ttf");
+  font-family: "ProductSansRegular";
+  src: url("assets/fonts/Product-Sans-Regular.ttf");
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'ShareFontBold', Arial, sans-serif !important;
+    font-family: 'ProductSansBold', Arial, sans-serif !important;
     color: #575C5F;
   }
   
   div {
-    font-family: 'ShareFontRegular', Arial, Helvetica, sans-serif;
+    font-family: 'ProductSansRegular', Arial, Helvetica, sans-serif;
   }
 
   .btn-primary {
@@ -115,5 +110,10 @@ export default {
 
   .multiselect__tag-icon:after {
       color: white !important;
+  }
+
+  .table-success {
+    --bs-table-color : white !important;
+    --bs-table-bg : #5D726A !important;
   }
   </style>
