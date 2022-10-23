@@ -383,10 +383,17 @@ def getlearningjourneybyid(id):
         "message": "No such learning journey found"
     }),404 
 
+########################################################
+
+"""
+Learning Journey Item
+- Create Learning Journey Item
+- Delete Learning Journey Item
+"""
 
 @api.route("/learningjourneyitem/<int:id>", methods=['POST'])
 def addcoursetolearningjourney(id):
-    data = request.json()
+    data = request.get_json()
     course_list = data["Course_List"]        
 
     try: 

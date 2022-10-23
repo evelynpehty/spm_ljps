@@ -1,49 +1,58 @@
 <template>
-<Loading v-show="loading" />
-<Modal v-if="modalActive" :modalMessage="modalMessage" :btnActive="btnActive" v-on:close-modal="closeModal" v-on:btn-yes="btnYes" v-on:btn-no="btnNo"/>
+    <Loading v-show="loading" />
+    <Modal v-if="modalActive" :modalMessage="modalMessage" :btnActive="btnActive" v-on:close-modal="closeModal" v-on:btn-yes="btnYes" v-on:btn-no="btnNo"/>
     <div class="container-fluid">
+            <div v-if="!learningjourney_existence">
+                <h1 style = "margin-top:80px; text-align: center;">Learning Journey does not exist</h1> 
+            </div>
 
-        <div class="row" style="margin-top:80px">
-            <h2 class="title">Update Learning Journey</h2>
-            <p class="title">You may click on the course name for more details of the course</p>
-        </div>
+            <div v-else> 
+                <div class="row" style="margin-top:80px">
+                    <h2 class="title">Update Learning Journey</h2>
+                <p class="title">You may click on the course name for more details of the course</p>
+            </div>
 
-        <div v-if="final_arr.length != 0">
-            <div v-for="value, key in final_arr" :key="key" class="accordion" id="accordionExample">
-                <div v-if="(value.Course_List).length !=0" class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" style="background-color:#80968a; color: white" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse'+key" aria-expanded="true" :aria-controls="'collapse'+key" >
-                        {{value.Skill_Item.Skill_Name}}
-                    </button>
-                    </h2>
-                    <div :id="'collapse'+key" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">  
-                            <div v-for="course_value, course_key in value.Course_List" :key="course_key" class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" :id="course_value.Course_ID" :value="course_value.Course_ID" v-model="selected_course">
-                                <label class="form-check-label" @click="OpenModal(course_value)">{{course_value.Course_Name}}</label> 
-                                <span class="ms-1 badge" style="background-color:#80968a">{{course_value.registration_status}}</span>
+            <div v-if="final_arr.length != 0">
+                <h5> Active Skills and Courses: </h5>
+                <div v-for="value, key in final_arr" :key="key" class="accordion" id="accordionExample">
+                    <div v-if="(value.Course_List).length !=0" class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" style="background-color:#80968a; color: white" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse'+key" aria-expanded="true" :aria-controls="'collapse'+key" >
+                            {{value.Skill_Item.Skill_Name}}
+                        </button>
+                        </h2>
+                        <div :id="'collapse'+key" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">  
+                                <div v-for="course_value, course_key in value.Course_List" :key="course_key" class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" :id="course_value.Course_ID" :value="course_value.Course_ID" v-model="selected_course">
+                                    <label class="form-check-label" @click="OpenModal(course_value)">{{course_value.Course_Name}}</label> 
+                                    <span class="ms-1 badge" style="background-color:#80968a">{{course_value.registration_status}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div v-else>
-              <h3> No Available Skills </h3>
-        </div>
+            <div v-else>
+                <h3> No Available Skills </h3>
+            </div>
 
-        <div v-if="retired_course_skills.length != 0">
-            <div class="accordion" id="accordionExample">
+            <div class="row" style="margin-top:20px" v-if="retired_courses.length != 0 | retired_skills.length !=0">
+                <h5> You may want to consider removing the following courses: </h5>
+            </div>
+
+            <div v-if="retired_courses.length != 0">
+                <div class="accordion" id="accordionRetiredCourses">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" style="background-color:#80968a; color: white" type="button"  data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Courses that are retired or with no skill assigned
+                        <button class="accordion-button" style="background-color:#80968a; color: white" type="button"  data-bs-toggle="collapse" data-bs-target="#collapseRetiredCourses" aria-expanded="true" aria-controls="collapseRetiredCourses">
+                            Courses that are pending/retired
                         </button>
                         </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div id="collapseRetiredCourses" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionRetiredCourses">
                             <div class="accordion-body">   
-                                <div v-for="value, key in retired_course_skills" :key="key" class="form-check form-check-inline">
+                                <div v-for="value, key in retired_courses" :key="key" class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" :id="value.Course_ID" :value="value.Course_ID" v-model="selected_course">
                                     <label class="form-check-label" @click="OpenModal(value)">{{value.Course_Name}}</label> 
                                     <span class="ms-1 badge" style="background-color:#80968a">{{value.registration_status}}</span>
@@ -51,16 +60,38 @@
                             </div>
                         </div>
                     </div>
-             </div>
-        </div>
+                </div>
+            </div>
+
+            <div v-if="retired_skills.length != 0">
+                <div class="accordion" id="accordionRetiredSkills">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" style="background-color:#80968a; color: white" type="button"  data-bs-toggle="collapse" data-bs-target="#collapseRetiredSkills" aria-expanded="true" aria-controls="collapseRetiredSkills">
+                            Courses with no assgined skills
+                        </button>
+                        </h2>
+                        <div id="collapseRetiredSkills" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">   
+                                <div v-for="value, key in  retired_skills" :key="key" class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" :id="value.Course_ID" :value="value.Course_ID" v-model="selected_course">
+                                    <label class="form-check-label" @click="OpenModal(value)">{{value.Course_Name}}</label> 
+                                    <span class="ms-1 badge" style="background-color:#80968a">{{value.registration_status}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-        <div class="row" style="margin-top:20px">
-            <div class="d-grid mb-2">
-                <button type="button" class="btn btn-success p-2" :disabled="enablebutton == true" @click="UpdateLJ()">Update Learning Journey</button>
+            <div class="row" style="margin-top:20px">
+                <div class="d-grid mb-2">
+                    <button type="button" class="btn btn-success p-2" :disabled="enablebutton == true" @click="UpdateLJ()">Update Learning Journey</button>
+                </div>
             </div>
         </div>
     </div>
-  </template>
+</template>
   
   <script>
   
@@ -80,7 +111,9 @@
           all_skills_arr: [],
           jobskills_arr: [],
           staff_registration_arr:[],
-          retired_course_skills: [],
+
+          retired_courses:[],
+          retired_skills:[],
 
           active_courseid: [],
           retired_courseid: [],
@@ -93,6 +126,8 @@
           modalMessage: null,
           modalActive: null,
           btnActive: false,
+
+          learningjourney_existence: true
         }
       }, 
   
@@ -108,11 +143,9 @@
             this.existing_courseid_arr.push(existingcourseitem.Course_ID) //to keep a copy of originally selected courseid
             this.selected_course.push(existingcourseitem.Course_ID) //so that all the previously selected courseid will be selected   
         }
-
-        }).catch(error => {
+        }).catch(() => {
             this.loading = false
-            this.modalMessage = error.response.data.message
-            this.modalActive = true
+            this.learningjourney_existence = false
         }).finally(() => {
             //get all courses
             this.axios.get('http://localhost:5000/api/course').then((response) => {
@@ -173,35 +206,33 @@
                                                                             text = text + " - "  + completion_status 
                                                                         }
                                                                         course_item["registration_status"] = text
-                                                                    }
-                                                                    
+                                                                    }         
                                                                 }
                                                             }
                                                            
                                                             json["Course_List"].push(course_item)
-                                                            //console.log(course_item)
-                                                            
                                                         }
-                                                    
-                                                        //console.log(this.existing_courseid_arr)
+                                                        
                                                         if((this.existing_courseid_arr).includes(course_item.Course_ID) & course_item.Course_Status != "Active"){
-                                                            (this.retired_course_skills).push(course_item)
-                                                            //console.log(this.retired_course_skills)
+                                                            if(!(this.retired_courses).includes(course_item)){
+                                                                (this.retired_courses).push(course_item)
+                                                            }
+                                                          
                                                         }
                                                         
                                                     }
                                                 }
                                             }
                                             this.final_arr.push(json)
-                                            //console.log(this.final_arr)
                                         }
-                                        // if skills status = retired, set all courses under it as inactive
+
+                                        
                                         else{
                                             for(var r_cid of courses){                                                    
-                                                (this.retired_courseid).push(r_cid.Course_ID)
+                                                (this.retired_courseid).push(r_cid.Course_ID) // if skills status = retired, set all courses under it as inactive
                                                 for(var r_ci of this.all_courses_arr){ //loop through the course id and retrieve more details about the course from the course arr
                                                     if(r_ci.Course_ID == r_cid.Course_ID){
-                                                        if((this.existing_courseid_arr).includes(r_ci.Course_ID)){
+                                                        if((this.existing_courseid_arr).includes(r_ci.Course_ID)){ //ignore those courses that are not in learning journey
                                                             for(var r2 of this.staff_registration_arr){  //check if courses are registered
                                                                 if(r2.Course_ID == r_cid.Course_ID){  
                                                                     if (r2.Reg_Status != "Rejected"){ //if registered or on waitlist, retrieve the reg_status and completion_status       
@@ -215,7 +246,14 @@
                                                                     
                                                                 }
                                                             }
-                                                            (this.retired_course_skills).push(r_ci)
+                                                            if(!(this.retired_skills).includes(r_ci)){
+                                                                (this.retired_skills).push(r_ci)
+                                                                if(r_ci.Course_Status != "Active"){
+                                                                    (this.retired_courses).push(r_ci)
+                                                                }
+                                                               
+                                                            }
+                                                           
                                                             
                                                         }
                                                     }
@@ -225,14 +263,20 @@
                                     }
                                 }                                
                             }   
-
+                            
                             var common = (this.retired_courseid).filter(element => this.active_courseid.includes(element));                         
                             for(var com of common){
-                                for(var rcid in this.retired_course_skills){
-                                    if(this.retired_course_skills[rcid].Course_ID == com){
-                                        (this.retired_course_skills).splice(rcid,1)
+                                for(var x in this.retired_skills){
+                                    if(this.retired_skills[x].Course_ID == com){
+                                        (this.retired_skills).splice(x,1)
                                     }
                                 }
+                                for(var y in this.retired_courses){
+                                    if(this.retired_courses[y].Course_ID == com){
+                                        (this.retired_courses).splice(y,1)
+                                    }
+                                }
+                                
                             }
 
                             this.loading = false   
@@ -252,38 +296,66 @@
               this.modalMessage = course_value.Course_Desc
           },
           btnYes() {
-              this.$router.push({name:"SelectJobRole"})
+            this.$router.go(this.$router.currentRoute)
           },
   
           btnNo(){
-              this.$router.push({name:"ManageLearningJourney"})
+              this.$router.push({name:"ViewLearningJourney"})
           },
           arrayEquals(a, b) {
-                return Array.isArray(a) &&
-                    Array.isArray(b) &&
-                    a.length === b.length &&
-                    a.every((val, index) => val === b[index]);
+            var difference = a
+                 .filter(x => !b.includes(x))
+                 .concat(b.filter(x => !a.includes(x)));            
+
+            if(difference.length == 0){
+                return true
+            }
+            else{
+                return false
+            }
           },
           UpdateLJ(){
             if((this.selected_course).length != 0){
+                this.loading = true
+
+                // item in selected course array but not in existing = new courses to be added
                 var add_item = this.selected_course.filter(x => !this.existing_courseid_arr.includes(x));
-                console.log(add_item)
 
+                // item in existing array but not in selected course array = courses to be deleted
                 var delete_item = this.existing_courseid_arr.filter(x => !this.selected_course.includes(x));
-                console.log(delete_item)
-
+                
                 
                 var add_json = {
                     "Course_List": add_item
                 }
 
-                var delete_json = {
-                    "Course_List": delete_item
+                //both add and delete
+                if(add_item.length != 0 & delete_item.length != 0){
+                    var promises = []
+                    promises.push(this.axios.post('http://localhost:5000/api/learningjourneyitem/'+this.$route.params.learningjourneyid, add_json))
+                    
+                    for(var delete_courseid of delete_item){
+                        promises.push(this.axios.delete("http://localhost:5000/api/learningjourneyitem/"+this.$route.params.learningjourneyid+"/"+delete_courseid))
+                    }
+
+                    Promise.all(promises).then(() => {
+                        this.btnActive = true
+                        this.modalMessage = "Learning journey has been successfully updated! Would you like to update again?"
+                    }).catch(() =>{
+                        this.modalMessage = "An error has occured"
+                        this.btnActive = false
+                    }).finally(()=>{
+                        this.loading = false
+                        this.modalActive = true
+                    })
+
                 }
 
-                if(add_item.length != 0){
-                    this.axios.post('http://localhost:5000/api/learningjourney'+this.$route.params.learningjourneyid, add_json).then((response) => {
-                    this.modalMessage = response.data.message
+                //only add
+                if(add_item.length != 0 & delete_item.length == 0){
+                    this.axios.post('http://localhost:5000/api/learningjourneyitem/'+this.$route.params.learningjourneyid, add_json).then(() => {
+                    this.modalMessage = "Learning journey has been successfully updated! Would you like to update again?"
+                    this.btnActive = true
                     }).catch(error => {
                         this.modalMessage = error.response.data.message 
                         this.btnActive = false
@@ -293,11 +365,20 @@
                     })
                 }
 
-                if(delete_item.length != 0){
-                    this.axios.delete('http://localhost:5000/api/learningjourney'+this.$route.params.learningjourneyid, delete_json).then((response) => {
-                    this.modalMessage = response.data.message
-                    }).catch(error => {
-                        this.modalMessage = error.response.data.message 
+                //only delete
+                if(delete_item.length != 0 & add_item.length == 0){
+                    this.loading = true
+                    var delete_promises = []
+                    
+                    for(var cid of delete_item){
+                        delete_promises.push(this.axios.delete("http://localhost:5000/api/learningjourneyitem/"+this.$route.params.learningjourneyid+"/"+cid))
+                    }
+
+                    Promise.all(delete_promises).then(() => {
+                        this.btnActive = true
+                        this.modalMessage = "Learning journey has been successfully updated! Would you like to update again?"
+                    }).catch(() => {
+                        this.modalMessage = "An error has occured"
                         this.btnActive = false
                     }).finally(() => {
                         this.loading = false
@@ -308,9 +389,10 @@
             }
 
             else{
-                this.modalActive = true
+                this.selected_course = this.existing_courseid_arr
                 this.modalMessage = "Please select a course"
                 this.btnActive = false
+                this.modalActive = true
             }
              
           }
@@ -339,5 +421,4 @@
   }
   
   </style>                       
-
 
