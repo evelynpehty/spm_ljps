@@ -410,28 +410,24 @@ def addcoursetolearningjourney(id):
     ), 201
 
 
-@api.route("/learningjourneyitem/<int:id>", methods=['DELETE'])
-def deletecoursefromlearningjourney(id):
-    data = request.json()
-    course_list = data["Course_List"]        
-
-    try: 
-        for cid in course_list:
-            item = LearningJourneyItem(id, cid)
-            db.session.delete(item)
-            db.session.commit() 
-        
+@api.route("/learningjourneyitem/<int:id>/<string:courseid>", methods=['DELETE'])
+def deletecoursefromlearningjourney(id, courseid):  
+    item =  LearningJourneyItem.query.filter_by(Learning_Journey_ID=id, Course_ID = courseid).first()
+    try:
+        db.session.delete(item)
+        db.session.commit()
     except:
         return jsonify({
             "code": 500,
-            "message": "An error occurred deleting course(s) from selected learning journey"
+            "message": "An error occurred deleting course(s) to selected learning journey"
 
         }), 500
+
 
     return jsonify(
         {
             "code": 200,
-            "message": f'Course(s) have been successfully deleted from selected learning journey!'
+             "message": "Course(s) have been successfully deleted to selected learning journey!"
         }
     ), 200
 
