@@ -16,6 +16,7 @@ import SelectJobRole from '../views/LearningJourney/SelectJobRoles.vue'
 import CreateLearningJourney from '../views/LearningJourney/CreateLearningJourney.vue'
 import ViewLearningJourney from '../views/LearningJourney/ViewAllLearningJourney.vue'
 import ViewLJDetails from '../views/LearningJourney/ViewLJDetails.vue'
+import UpdateLearningJourney from '../views/LearningJourney/UpdateLearningJourney.vue'
 
 const routes = [
   {
@@ -134,6 +135,16 @@ const routes = [
     component: ViewLJDetails,
     meta: {
       title: "CreateLeViewLJDetailsarningJourney",
+      requiresAuth: true,
+    },
+  },
+
+  {
+    path: "/update-learning-journey/:learningjourneyid",
+    name: "UpdateLearningJourney",
+    component: UpdateLearningJourney,
+    meta: {
+      title: "UpdateLearningJourney",
       requiresAuth: true,
     },
   },
