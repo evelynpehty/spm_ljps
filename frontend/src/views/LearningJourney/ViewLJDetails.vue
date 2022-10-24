@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <div class="row mb-3 justify-content-center" v-if="this.job_role_name != ''">
+    <div class="row mb-5 justify-content-center" v-if="this.job_role_name != ''">
       <div class="col-sm-6 col-lg-3">
         <div class="card">
           <div class="card-header text-center justify-content-center">
@@ -52,12 +52,6 @@
             </tr>
           </tbody>
         </table>
-      </div>
-    </div>
-
-    <div class="row justify-content-center">
-      <div class="col-sm-6 col-lg-2 d-grid">
-        <button type="button" class="btn btn-sm btn-primary" @click="this.$router.push({name: 'ViewLearningJourney'})">Back</button>
       </div>
     </div>
 
