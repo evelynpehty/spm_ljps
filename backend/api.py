@@ -314,6 +314,27 @@ def getcoursebystatus(status):
 
 ########################################################
 """
+Registration 
+- Get Course Registration by staffid
+"""
+
+@api.route("/registration/<int:staffid>")
+def getregistrationbystaff(staffid):
+    registration_list = Registration.query.filter_by(Staff_ID=staffid).all()
+    if len(registration_list):
+        return jsonify({
+            "code": 200,
+            "data":{
+                "Registration_List": [r.json() for r in registration_list]
+            }
+        }), 200
+    return jsonify({
+        "code": 404,
+        "message": "There are no registration"
+    }),404
+
+########################################################
+"""
 Learning Journey 
 - Create Learning Journey
 - Get Learning Journey by Staff
@@ -439,25 +460,4 @@ def deletecoursefromlearningjourney(id, courseid):
     ), 200
 
     
-########################################################
-"""
-Registration 
-- Get Course Registration by staffid
-"""
-
-@api.route("/registration/<int:staffid>")
-def getregistrationbystaff(staffid):
-    registration_list = Registration.query.filter_by(Staff_ID=staffid).all()
-    if len(registration_list):
-        return jsonify({
-            "code": 200,
-            "data":{
-                "Registration_List": [r.json() for r in registration_list]
-            }
-        }), 200
-    return jsonify({
-        "code": 404,
-        "message": "There are no registration"
-    }),404
-
 ########################################################

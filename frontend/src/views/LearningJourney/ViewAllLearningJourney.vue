@@ -21,7 +21,7 @@
 
         <CollapsibleCard :id="lj.Learning_Journey_ID" :targetid="lj.Learning_Journey_ID" :hidden="hidden" :cardSubtitle="'Learning Journey '+lj.Learning_Journey_ID"
         :cardTitle="lj.Job_Role_Name" :cardMessage="cardMessage" :btnName1="btnName1" :btnName2="btnName2" 
-        :btnName3="btnName3" v-on:btn-next="btnNext" v-on:btn-update="btnNext" v-on:btn-delete="btnNext" 
+        :btnName3="btnName3" v-on:btn-next="btnNext" v-on:btn-update="btnUpdate" v-on:btn-delete="btnNext" 
         :btnHidden1="btnHidden1" :btnHidden2="btnHidden2" :btnHidden3="btnHidden3" :hiddenSubtitle="hiddenSubtitle"></CollapsibleCard>
 
       </div>
@@ -104,6 +104,11 @@ export default {
     btnNext(id){
       this.loading=true
       this.$router.push({name:"ViewLJDetails", params: { learningjourneyid: id } })
+    },
+
+    btnUpdate(id){
+      this.loading=true
+      this.$router.push({name:"UpdateLearningJourney", params: { learningjourneyid: id } })
     },
   }
 }

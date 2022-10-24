@@ -10,7 +10,7 @@
                 <div class="row" style="margin-top:80px">
                     <h2 class="title">Update Learning Journey</h2>
                 <p class="title">You may click on the course name for more details of the course</p>
-            </div>
+            
 
             <div v-if="final_arr.length != 0">
                 <h5> Active Skills and Courses: </h5>
@@ -84,11 +84,12 @@
                 </div>
             </div>
             
-            <div class="row" style="margin-top:20px">
+            <div v-if="final_arr.length != 0 | retired_courses.length != 0 | retired_skills.length !=0" class="row" style="margin-top:20px">
                 <div class="d-grid mb-2">
                     <button type="button" class="btn btn-success p-2" :disabled="enablebutton == true" @click="UpdateLJ()">Update Learning Journey</button>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </template>
@@ -194,24 +195,28 @@
                                                 for(var cid of courses){
                                                     if(course_item.Course_ID == cid.Course_ID){ 
                                                         //console.log(course_item)
+                                                       
+
+                                                        for(var r of this.staff_registration_arr){  //check if courses are registered
+                                                            if(r.Course_ID == cid.Course_ID){  
+                                                                var regi_status = r.Reg_Status
+                                                                if (regi_status != "Rejected"){ //if registered or on waitlist, retrieve the reg_status and completion_status       
+                                                                    var completion_status = r.Completion_Status //concat regstatus and completion status together to display in badge
+                                                                    var text = regi_status
+                                                                    if(completion_status != null){
+                                                                        text = text + " - "  + completion_status 
+                                                                    }
+                                                                    course_item["registration_status"] = text
+                                                                }         
+                                                            }
+                                                        }
+                                                        
                                                         if(course_item.Course_Status == "Active"){
                                                             this.active_courseid.push(cid.Course_ID)
-                                                            for(var r of this.staff_registration_arr){  //check if courses are registered
-                                                                if(r.Course_ID == cid.Course_ID){  
-                                                                    var regi_status = r.Reg_Status
-                                                                    if (regi_status != "Rejected"){ //if registered or on waitlist, retrieve the reg_status and completion_status       
-                                                                        var completion_status = r.Completion_Status //concat regstatus and completion status together to display in badge
-                                                                        var text = regi_status
-                                                                        if(completion_status != null){
-                                                                            text = text + " - "  + completion_status 
-                                                                        }
-                                                                        course_item["registration_status"] = text
-                                                                    }         
-                                                                }
-                                                            }
-                                                           
-                                                            json["Course_List"].push(course_item)
+                                                            json["Course_List"].push(course_item)   
                                                         }
+                                                        
+                                                        
                                                         
                                                         if((this.existing_courseid_arr).includes(course_item.Course_ID) & course_item.Course_Status != "Active"){
                                                             if(!(this.retired_courses).includes(course_item)){
@@ -234,7 +239,8 @@
                                                     if(r_ci.Course_ID == r_cid.Course_ID){
                                                         if((this.existing_courseid_arr).includes(r_ci.Course_ID)){ //ignore those courses that are not in learning journey
                                                             for(var r2 of this.staff_registration_arr){  //check if courses are registered
-                                                                if(r2.Course_ID == r_cid.Course_ID){  
+                                                                if(r2.Course_ID == r_cid.Course_ID){ 
+                                                                   
                                                                     if (r2.Reg_Status != "Rejected"){ //if registered or on waitlist, retrieve the reg_status and completion_status       
                                                                         var completion_status2 = r2.Completion_Status //concat regstatus and completion status together to display in badge
                                                                         var text2 = r2.Reg_Status
