@@ -47,7 +47,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
                         <button class="accordion-button" style="background-color:#80968a; color: white" type="button"  data-bs-toggle="collapse" data-bs-target="#collapseRetiredCourses" aria-expanded="true" aria-controls="collapseRetiredCourses">
-                            Courses that are pending/retired
+                            Courses that are Pending / Retired
                         </button>
                         </h2>
                         <div id="collapseRetiredCourses" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionRetiredCourses">
@@ -68,7 +68,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
                         <button class="accordion-button" style="background-color:#80968a; color: white" type="button"  data-bs-toggle="collapse" data-bs-target="#collapseRetiredSkills" aria-expanded="true" aria-controls="collapseRetiredSkills">
-                            Courses with no assgined skills
+                            Courses with No Assigned Skills
                         </button>
                         </h2>
                         <div id="collapseRetiredSkills" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
