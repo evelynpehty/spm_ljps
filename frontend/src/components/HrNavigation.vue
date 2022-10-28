@@ -24,6 +24,13 @@
               <li><a class="dropdown-item" href="/view-all-jobs">View All Job Roles</a></li>
             </ul>
           </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle mx-3" href="#" role="button" data-bs-toggle="dropdown">Learning Journey</a>
+            <ul class="dropdown-menu mx-3">
+              <li><a class="dropdown-item" href="/select-job-role">Create Learning Journey</a></li>
+              <li><a class="dropdown-item" href="/view-learning-journey">View Learning Journey</a></li>
+            </ul>
+          </li>
         </ul>
         <ul class="navbar-nav me-0 mb-2 mb-lg-0">
             <li class="nav-item">
