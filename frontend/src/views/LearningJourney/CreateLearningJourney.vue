@@ -177,7 +177,7 @@ export default {
         },
 
         btnNo(){
-            this.$router.push({name:"ManageLearningJourney"})
+            this.$router.push({name:"ViewLearningJourney"})
         },
         CreateLJ(){
             if((this.selected_course).length!=0){
