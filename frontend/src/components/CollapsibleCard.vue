@@ -1,5 +1,5 @@
 <template>
-    <div class="card shadow-sm mb-5">
+    <div class="card shadow-sm mb-3">
         <div class="card-header collapsible cursor-pointer rotate" data-bs-toggle="collapse" :data-bs-target="'#target'+targetid">
             <h6 class="card-title mt-2" :style="hiddenSubtitle" v-html="cardSubtitle"></h6>
             <h3 class="card-title" v-html="cardTitle"></h3>
