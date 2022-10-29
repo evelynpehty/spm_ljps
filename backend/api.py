@@ -165,35 +165,11 @@ def updateskill(id):
         }),404
 
     data = request.get_json()
-    status = data["Skill_Status"]
-
-    ## soft delete
-    if status == "Retired":
-        skill.Skill_Status = status
-
-        try:
-            db.session.commit()
-
-        except: 
-            return jsonify(
-                {
-                    "code": 500,
-                    "message": "An error occurred while deleting the skill."
-                }
-            ), 500
     
-        return jsonify(
-            {
-                "code": 201,
-                "data": skill.json(),
-                "message": "Skill has been successfully deleted!"
-
-            }
-        ), 201  
-
     ## update skill name and relevant courses
     try:
         skill.Skill_Name = data["Skill_Name"]
+        skill.Skill_Status = data["Skill_Status"]
         course_list = data['Course_Skills']
         course_list_db = CourseSkill.query.filter_by(Skill_ID=id).all()
 
@@ -223,7 +199,7 @@ def updateskill(id):
             "message": "Skill has been successfully updated!"
 
         }
-    ), 201  
+    ), 201 
 
 ########################################################
 
