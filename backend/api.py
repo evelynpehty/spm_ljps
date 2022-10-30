@@ -153,6 +153,53 @@ def getallskills():
         "code": 404,
         "message": "There are no available skill."
     }),404
+    
+@api.route("/skill/<int:id>", methods=["PUT"])
+def updateskill(id):
+    skill = Skill.query.filter_by(Skill_ID=id).first()
+
+    if not skill:
+        return jsonify({
+            "code": 404,
+            "message": "No such skill record found."
+        }),404
+
+    data = request.get_json()
+    
+    ## update skill name and relevant courses
+    try:
+        skill.Skill_Name = data["Skill_Name"]
+        skill.Skill_Status = data["Skill_Status"]
+        course_list = data['Course_Skills']
+        course_list_db = CourseSkill.query.filter_by(Skill_ID=id).all()
+
+        for Course_ID in course_list:
+            if Course_ID not in course_list_db:
+                course_skill = CourseSkill(Course_ID, skill.Skill_ID)
+                db.session.add(course_skill)
+        
+        for Course_ID_db in course_list_db:
+            if Course_ID_db not in course_list:
+                db.session.delete(Course_ID_db)
+                
+        db.session.commit()
+
+    except: 
+        return jsonify(
+            {
+                "code": 500,
+                "message": "An error occurred while updating the skill."
+            }
+        ), 500
+
+    return jsonify(
+        {
+            "code": 201,
+            "data": skill.json(),
+            "message": "Skill has been successfully updated!"
+
+        }
+    ), 201  
 
 ########################################################
 

@@ -1,7 +1,7 @@
 
 <template>
   <Loading v-show="loading" />
-
+  <Modal v-if="modalActive" :modalMessage="modalMessage" :btnActive="btnActive" v-on:close-modal="closeModal" v-on:btn-yes="btnYes" v-on:btn-no="btnNo"/>
   <div class="container-fluid">
     <div class="row" style="margin-top:80px">
       <h2 class="title">View All Skills</h2>
@@ -23,10 +23,11 @@
             <tr v-for = "val in skillData" :key = "val.skillName">
               <td>{{val.skillName}}</td>
               <td>{{val.skillStatus}}</td>
-              <!--<td>{{val.Status}}</td>-->
               <td>
-                <button type="button" class="btn btn-outline-success" @click="UpdateSkill(val.skillID)" style = "margin-right: 20px;">Update</button>
-                <button type="button" class="btn btn-outline-success" @click="ViewSkillDetails(val.skillID)" style = "margin-left: 20px;">View Details</button>
+                
+                <button type="button" class="btn btn-outline-success" @click="ViewSkillDetails(val.skillID)">View</button>
+                <button type="button" class="btn btn-outline-success" @click="UpdateSkill(val.skillID)" style = "margin-left: 20px;">Update</button>
+                <button :disabled="val.skillStatus != 'Active'" type="button" class="btn btn-outline-success" @click="DeleteSkill(val.skillID)" style = "margin-left: 20px;">Delete</button>
               </td>
             </tr>
           </table>
@@ -41,18 +42,25 @@
 
 <script>
 import Loading from "/src/components/Loading";
-
+import Modal from "/src/components/Modal";
 export default {
     name: "ViewAllSkills",
     components: {
-      Loading
+      Loading, Modal
     },
 
     data(){
       return {
         skillData: [], 
         error: "",
+
+        selected_skillID: null,
+        requestjson: null,
+
         loading: null,
+        modalMessage: "",
+        modalActive: null,
+        btnActive: false
       }
     },
     created(){
@@ -77,11 +85,66 @@ export default {
       })
     },
     methods:{
+      closeModal() {
+        this.modalActive = !this.modalActive;
+      },
+      btnYes() {
+       this.loading = true
+       this.closeModal()
+       this.axios.get("http://127.0.0.1:5000/api/skill/" + this.selected_skillID).then((response) => {
+          var apiData = response.data.data    
+          this.requestjson = {
+                "Skill_Name":response.data.data.Skill_Name,
+                "Course_Skills": [],
+                "Skill_Status": "Retired"
+              }  
+          for(var item of apiData.Course_List){
+            (this.requestjson.Course_Skills).push(item.Course_ID)
+          }
+        }).catch(()=>{
+          this.modalMessage = "An error has occurred while deleting the skill. Please try again."
+        }).finally(()=>{
+          this.axios.put("http://127.0.0.1:5000/api/skill/" + this.selected_skillID, this.requestjson).then((response) => {
+            
+            if(response.data.code == 201){
+              this.modalMessage = "Skill ID - "+ response.data.data.Skill_ID +" is now retired"
+              
+              for(var s of this.skillData){
+                if(s.skillID == this.selected_skillID){
+                  s.skillStatus = "Retired"
+                }
+              }
+
+            }
+            else{
+              this.modalMessage = "An error has occurred while deleting the skill. Please try again."
+            }
+            
+          }).catch(()=>{
+            this.modalMessage = "An error has occurred while deleting the skill. Please try again."
+          }).finally(()=>{
+            this.loading = false
+            this.btnActive = false
+            this.modalActive = true; 
+          })
+        })
+
+      },
+
+      btnNo(){
+        this.closeModal()
+      },
       UpdateSkill(skillID){
         this.$router.push({name:"UpdateSkill", params: { skillID: skillID}})
       },
       ViewSkillDetails(skillID){
         this.$router.push({name: "ViewSkillDetails", params: {skillID : skillID}})
+      },
+      DeleteSkill(skillID){
+        this.modalMessage = "Are you sure you want to retire SkillID - " + skillID
+        this.btnActive = true
+        this.selected_skillID = skillID
+        this.modalActive = true  
       }
     }
 }
