@@ -127,7 +127,7 @@ export default {
 
       // Component item
       loading: null,
-      modalMessage: "Job Created Successfully. Would you like to create another job role?",
+      modalMessage: "Job updated Successfully. Would you like to update another job role?",
       modalActive: null,
       btnActive: true,
     
@@ -267,7 +267,8 @@ export default {
         "Job_Role_Desc": this.JobRoleDesc,
         "Job_Role_Skills": selected_skillid,
       }
-      this.axios.post('http://localhost:5000/api/updatejobrole'+jobid, json).then((response) => {
+      console.log(json)
+      this.axios.post('http://localhost:5000/api/jobrole'+jobid, json).then((response) => {
           this.modalMessage = response.data.message + " Would you like to update another job role?"
           this.btnActive = true
         }).catch(error => {
