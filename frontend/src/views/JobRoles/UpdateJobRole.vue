@@ -39,6 +39,14 @@
             <label for="JobRoleDesc" class="form-label">Job Role Description</label>
             <textarea class="form-control form-control-md input-border-color" placeholder="e.g. Will be tasked to code the frontend of application." id="floatingTextarea" style="height: 100px;" v-model="JobRoleDesc"></textarea>
           </div>
+          <div class="col-md-4">
+                <label for="JobRoleName" class="form-label">Job Role Status</label>
+                <div class="mt-2">
+                  <span class="me-2">Retired</span>
+                  <Toggle v-model="value" />
+                  <span class="ms-2">Active</span>
+                </div>
+              </div>
 
           <div v-if="boolSkills" class="mb-3">
             <label for="SkillName" class="form-label">Skills affiliated with Job Role</label>
@@ -81,6 +89,7 @@
 import Modal from "/src/components/Modal";
 import Loading from "/src/components/Loading";
 import VueMultiselect from 'vue-multiselect';
+import Toggle from '@vueform/toggle';
 
 export default {
   name: "UpdateJobRole",
