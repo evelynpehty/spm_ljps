@@ -114,15 +114,17 @@ export default {
   data () {
     return {
       // Job Role Information
+      jobroleid : this.$route.params.jobroleid,
       JobRoleName : "",
       JobRoleDesc : "",
-      existingSkillID : [],
-      existingSkillList : [],
+      
 
       // Skills
       activeSkills : [],
-      boolSkills : true,
       selectedSkills :[],
+      existingSkillID : [],
+      existingSkillList : [],
+      boolSkills : true,
 
 
       // Component item
@@ -141,8 +143,7 @@ export default {
   created() {
     this.loading = true
 
-    var jobroleid = this.$route.params.jobroleid
-    this.axios.get("http://127.0.0.1:5000/api/jobrole/"+jobroleid).then((response)=>{
+    this.axios.get("http://127.0.0.1:5000/api/jobrole/"+this.jobroleid).then((response)=>{
         this.JobRoleName = response.data.data.Job_Role_Name
         this.JobRoleDesc = response.data.data.Job_Role_Desc
         if (response.data.data.SkillList.length != 0){
@@ -248,7 +249,7 @@ export default {
 
     },
 
-    UpdateJobRole(jobid) {
+    UpdateJobRole() {
       var selected_skillid = []
 
       for (let i=0; i<this.existingSkillID.length; i++){
@@ -267,8 +268,8 @@ export default {
         "Job_Role_Desc": this.JobRoleDesc,
         "Job_Role_Skills": selected_skillid,
       }
-      console.log(json)
-      this.axios.post('http://localhost:5000/api/jobrole'+jobid, json).then((response) => {
+      //console.log(json)
+      this.axios.put('http://localhost:5000/api/jobrole/'+ this.jobroleid, json).then((response) => {
           this.modalMessage = response.data.message + " Would you like to update another job role?"
           this.btnActive = true
         }).catch(error => {
