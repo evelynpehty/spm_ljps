@@ -40,26 +40,6 @@
             <textarea class="form-control form-control-md input-border-color" placeholder="e.g. Will be tasked to code the frontend of application." id="floatingTextarea" style="height: 100px;" v-model="JobRoleDesc"></textarea>
           </div>
 
-          <div class="mb-3">
-            <label for="JobRoleSkills" class="form-label">Existing Job Role Skills</label>
-            <p v-if = "this.existingSkillID.length == 0"  class="title">No associated skills with Job Role: {{JobRoleName}}</p>
-              <br>
-              <div v-if = "this.existingSkillID.length != 0" class = "container" style = "margin: auto;">
-                <table class = "table table-striped" border = "1">
-                  <tr>
-                    <th>Skill Name</th>
-                    <th>Skill Status</th>
-                    <th>Action</th>
-                  </tr>
-                  <tr v-for = "val in existingSkillList" :key = "val.Skill_ID">
-                      <td>{{val.Skill_Name}}</td>
-                      <td>{{val.Skill_Status}}</td>
-                      <td><button type="button" class="btn btn-outline-success" @click="RemoveSkill(val.Skill_ID)" style = "margin-right: 20px;">Remove</button></td>
-                  </tr>
-              </table>
-              </div>
-          </div>
-
           <div v-if="boolSkills" class="mb-3">
             <label for="SkillName" class="form-label">Skills affiliated with Job Role</label>
             <VueMultiselect
@@ -88,7 +68,8 @@
           </div>
 
           <div class="d-grid mb-2">
-            <button type="submit" class="btn btn-success p-2">Update</button>
+            <button v-if="changes" type="submit" class="btn btn-success p-2">Update</button>
+            <button v-else type="submit" class="btn btn-success p-2" disabled>Update</button>
           </div>
       </form>
       </div>
@@ -99,8 +80,7 @@
 <script>
 import Modal from "/src/components/Modal";
 import Loading from "/src/components/Loading";
-import VueMultiselect from 'vue-multiselect'
-
+import VueMultiselect from 'vue-multiselect';
 
 export default {
   name: "UpdateJobRole",
@@ -108,7 +88,8 @@ export default {
   components: {
     Modal,
     Loading,
-    VueMultiselect
+    VueMultiselect,
+    Toggle
   },
 
   data () {
@@ -117,14 +98,23 @@ export default {
       jobroleid : this.$route.params.jobroleid,
       JobRoleName : "",
       JobRoleDesc : "",
+      JobRoleStatus : "",
       
 
       // Skills
+      skillList : [],
       activeSkills : [],
       selectedSkills :[],
-      existingSkillID : [],
-      existingSkillList : [],
+      tempSkillList : [],
+      tempActiveSkills : [],
       boolSkills : true,
+
+      // Comparison - Store Previous Values
+      JobRoleName_Copy: "",
+      JobRoleDesc_Copy: "",
+      JobRoleStatus_Copy: "",
+      skillList_Copy: [],
+      selectedSkills_copy : [],
 
 
       // Component item
@@ -132,7 +122,7 @@ export default {
       modalMessage: "Job updated Successfully. Would you like to update another job role?",
       modalActive: null,
       btnActive: true,
-    
+
       // Errors
       errors: [],
 
@@ -146,12 +136,21 @@ export default {
     this.axios.get("http://127.0.0.1:5000/api/jobrole/"+this.jobroleid).then((response)=>{
         this.JobRoleName = response.data.data.Job_Role_Name
         this.JobRoleDesc = response.data.data.Job_Role_Desc
-        if (response.data.data.SkillList.length != 0){
-          for (let i = 0; i < response.data.data.SkillList.length; i++){
-            this.existingSkillID.push(response.data.data.SkillList[i].Skill_ID)
-          }
+        this.JobRoleStatus = response.data.data.Job_Role_Status
+        this.skillList = response.data.data.SkillList
+        
+
+        this.JobRoleName_Copy = response.data.data.Job_Role_Name
+        this.JobRoleDesc_Copy =  response.data.data.Job_Role_Desc
+        this.JobRoleStatus_Copy = response.data.data.Job_Role_Status
+        this.skillList_Copy =  response.data.data.SkillList
+
+        for (var i in this.skillList){
+          this.tempSkillList.push(this.axios.get("http://127.0.0.1:5000/api/skill/" + this.skillList[i].Skill_ID))
         }
-        console.log()
+
+        this.tempActiveSkills = this.axios.get("http://localhost:5000/api/skill/Active")
+        
       }).catch(error=>{
         if (error.response.data.code == "404"){
           this.errors.push(error.response.data.message)
@@ -160,35 +159,37 @@ export default {
           this.errors.push("Error occured in retrieving Job Role Data")
         }
       }).finally(()=>{
-        let promises = [];
-
-        for(var selectedSkillID of this.existingSkillID){
-          promises.push(this.axios.get("http://127.0.0.1:5000/api/skill/"+selectedSkillID))
-        }
-
-        Promise.all(promises).then(responses => {
-          for(var r of responses){
-            this.existingSkillList.push(r.data.data)
+        Promise.all(this.tempSkillList).then((responses) => {
+          for (var r in responses) {
+            this.skillList[r]["Skill_Name"] = responses[r].data.data.Skill_Name 
           }
-          this.loading = false
+        }).finally(() => {
+          Promise.all([this.tempActiveSkills]).then((responses) => {
+            this.tempActiveSkills = responses[0].data.data.Skill_List
+          }).finally(() => {
+            this.selectedSkills_copy = this.skillList
+            this.selectedSkills = this.skillList
+            this.activeSkills = this.tempActiveSkills
+            this.loading = false
+          })
         })
-      })
 
-    this.axios.get("http://localhost:5000/api/skill/Active").then((response)=> {
-      this.activeSkills = response.data.data.Skill_List
-      console.log(this.activeSkills)
-    }).catch(error => {
-      console.log(error.response.data)
-      if (error.response.data.code == "404") {
-        this.boolSkills = false
-        console.log(this.activeSkills)
-      }
-    }).finally(() => {
-      this.loading = false
-    })
+        })
+      
 
     
   }, 
+
+  computed: {
+      changes() {
+        if (this.JobRoleName != this.JobRoleName_Copy | this.JobRoleDesc != this.JobRoleDesc_Copy | this.JobRoleStatus != this.JobRoleStatus_Copy |this.arrayEquals(this.selectedSkills, this.selectedSkills_copy) ) {
+          return true
+        } else {
+          return false
+        }
+        
+      }
+    },
 
   methods: {
     
@@ -233,42 +234,15 @@ export default {
       this.SelectedSkills = ""
     },
 
-    RemoveSkill(skillid){
-
-      for (let i=0; i<this.existingSkillID.length; i++){
-        if(this.existingSkillID[i] == skillid){
-          this.existingSkillID.splice(i,1)
-        }
-      }
-
-      for (let j=0; j<this.existingSkillList.length; j++){
-        if(this.existingSkillList[j].Skill_ID == skillid){
-          this.existingSkillList.splice(j,1)
-        }
-      }
-
-    },
 
     UpdateJobRole() {
-      var selected_skillid = []
-
-      for (let i=0; i<this.existingSkillID.length; i++){
-        selected_skillid.push(this.existingSkillID[i])
-        }
-
-      for(var j of this.selectedSkills){
-        if (!selected_skillid.includes(j)){
-          selected_skillid.push(j.Skill_ID)
-        }
-      }
-      this.loading = true;
-     
       var json = {
         "Job_Role_Name": this.JobRoleName,  
         "Job_Role_Desc": this.JobRoleDesc,
-        "Job_Role_Skills": selected_skillid,
+        "Job_Role_Status": this.JobRoleStatus,
+        "Job_Role_Skills": this.selectedSkills,
       }
-      //console.log(json)
+      console.log(json)
       this.axios.put('http://localhost:5000/api/jobrole/'+ this.jobroleid, json).then((response) => {
           this.modalMessage = response.data.message + " Would you like to update another job role?"
           this.btnActive = true
@@ -279,7 +253,20 @@ export default {
             this.loading = false
             this.modalActive = true; 
           })
-    }
+    },
+
+    arrayEquals(a, b) {
+        var difference = a
+          .filter(x => !b.includes(x))
+          .concat(b.filter(x => !a.includes(x)));            
+
+        if(difference.length == 0){
+            return false
+        }
+        else{
+            return true
+        }
+      }
 
   }
 
