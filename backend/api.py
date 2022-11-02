@@ -273,7 +273,8 @@ def updatejobrole(id):
     try:
         job_role.Job_Role_Name = data["Job_Role_Name"]
         job_role.Job_Role_Desc = data["Job_Role_Desc"]
-
+        job_role.Job_Role_Status = data["Job_Role_Status"]
+        
         skill_list = data['Job_Role_Skills']
         skill_list_db = JobRoleSkill.query.filter_by(Job_Role_ID=id).all()
 
