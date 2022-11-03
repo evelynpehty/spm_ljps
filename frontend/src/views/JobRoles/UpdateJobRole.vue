@@ -39,14 +39,11 @@
             <label for="JobRoleDesc" class="form-label">Job Role Description</label>
             <textarea class="form-control form-control-md input-border-color" placeholder="e.g. Will be tasked to code the frontend of application." id="floatingTextarea" style="height: 100px;" v-model="JobRoleDesc"></textarea>
           </div>
-          <div class="col-md-4">
-                <label for="JobRoleName" class="form-label">Job Role Status</label>
-                <div class="mt-2">
-                  <span class="me-2">Retired</span>
-                  <Toggle v-model="value" />
-                  <span class="ms-2">Active</span>
-                </div>
-              </div>
+
+          <div class="mb-3">
+            <label for="JobRoleStatus" class="form-label">Job Role Status</label>
+            <input type="text" class="form-control form-control-md input-border-color" id="JobRoleName" placeholder="e.g. Retired/Active" v-model="JobRoleStatus">
+          </div>
 
           <div v-if="boolSkills" class="mb-3">
             <label for="SkillName" class="form-label">Skills affiliated with Job Role</label>
@@ -89,7 +86,6 @@
 import Modal from "/src/components/Modal";
 import Loading from "/src/components/Loading";
 import VueMultiselect from 'vue-multiselect';
-import Toggle from '@vueform/toggle';
 
 export default {
   name: "UpdateJobRole",
@@ -98,7 +94,6 @@ export default {
     Modal,
     Loading,
     VueMultiselect,
-    Toggle
   },
 
   data () {
@@ -117,6 +112,7 @@ export default {
       tempSkillList : [],
       tempActiveSkills : [],
       boolSkills : true,
+      value_copy : null,
 
       // Comparison - Store Previous Values
       JobRoleName_Copy: "",
@@ -131,6 +127,7 @@ export default {
       modalMessage: "Job updated Successfully. Would you like to update another job role?",
       modalActive: null,
       btnActive: true,
+      value : null,
 
       // Errors
       errors: [],
@@ -153,6 +150,15 @@ export default {
         this.JobRoleDesc_Copy =  response.data.data.Job_Role_Desc
         this.JobRoleStatus_Copy = response.data.data.Job_Role_Status
         this.skillList_Copy =  response.data.data.SkillList
+
+        if (this.JobRoleStatus == "Active"){
+          this.value = true
+          this.value_copy = true
+        }
+        else {
+          this.value = false
+          this.value_copy = false
+        }
 
         for (var i in this.skillList){
           this.tempSkillList.push(this.axios.get("http://127.0.0.1:5000/api/skill/" + this.skillList[i].Skill_ID))
