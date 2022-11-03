@@ -387,6 +387,7 @@ Learning Journey
 - Get Learning Journey by Staff
 - Get Learning Journey by Id
 - Update Learning Journey (add or delete courses)
+- Delete Learning Journey
 """
 
 @api.route("/learningjourney", methods=['POST'])
@@ -451,12 +452,58 @@ def getlearningjourneybyid(id):
         "message": "No such learning journey found"
     }),404 
 
+# userstory - delete learning journey
+@api.route("/learningjourney/<int:id>", methods=["DELETE"])
+def deletelearningjourneybyid(id):
+    lj = LearningJourney.query.filter_by(Learning_Journey_ID=id).first()
+    lji_list = LearningJourneyItem.query.filter_by(Learning_Journey_ID=id).all()
+    
+    if lj:
+        # if learning journey consist of learning journey item then delete all the item first else will have FK error
+        if len(lji_list) != 0:
+            try:
+                for item in lji_list:
+                    db.session.delete(item)
+                db.session.commit()
+                
+            except:
+                return jsonify({
+                    "code": 500,
+                    "message": "An error occurred deleting selected learning journey item"
+
+                }), 500
+            
+        # after that delete the learning journey record from learning journey table        
+        try:
+            db.session.delete(lj)
+            db.session.commit()
+                
+        except:
+            return jsonify({
+                "code": 500,
+                "message": "An error occurred deleting selected learning journey"
+
+            }), 500
+                        
+        return jsonify(
+            {
+                "code": 200,
+                "message": "Learning Journey has been deleted successfully"
+            }
+        ), 200
+            
+    return jsonify({
+        "code": 404,
+        "message": "Learning Journey does not exist"
+    }),404 
+
+
 ########################################################
 
 """
 Learning Journey Item
 - Create Learning Journey Item
-- Delete Learning Journey Item
+- Delete Learning Journey Item by ID and Course
 """
 
 @api.route("/learningjourneyitem/<int:id>", methods=['POST'])
@@ -506,5 +553,3 @@ def deletecoursefromlearningjourney(id, courseid):
         }
     ), 200
 
-    
-########################################################
