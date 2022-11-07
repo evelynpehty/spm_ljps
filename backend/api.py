@@ -153,7 +153,7 @@ def getallskills():
         "code": 404,
         "message": "There are no available skill."
     }),404
-    
+     
 @api.route("/skill/<int:id>", methods=["PUT"])
 def updateskill(id):
     skill = Skill.query.filter_by(Skill_ID=id).first()
@@ -199,7 +199,7 @@ def updateskill(id):
             "message": "Skill has been successfully updated!"
 
         }
-    ), 201  
+    ), 201 
 
 ########################################################
 
