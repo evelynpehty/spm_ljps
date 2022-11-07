@@ -574,6 +574,32 @@ class TestUpdateJobRole(TestApp):
                 },
             "message": "Job Role has been successfully updated!"
         })
+        
+    def test_update_jobrole_withexistingname(self):
+        s1 = Skill(Skill_Name ="Leadership")        
+        jr1 = JobRole(Job_Role_Name='Video Producer', Job_Role_Desc='Produce Weekly Video')
+        jr2 = JobRole(Job_Role_Name='Photographer', Job_Role_Desc='Take photo')
+
+        db.session.add(jr1)
+        db.session.add(jr2)
+        db.session.add(s1)
+        db.session.commit()
+        
+        request_body = {
+            "Job_Role_Name":"Photographer",
+            "Job_Role_Desc":"Produce Video",
+            "Job_Role_Status": "Retired",
+            "Job_Role_Skills": [s1.Skill_ID]
+        }
+        
+        response = self.client.put("/api/jobrole/"+ str(jr1.Job_Role_ID),
+                            data=json.dumps(request_body),
+                            content_type='application/json')
+
+        self.assertEqual(response.json, {
+            "code": 400,       
+            "message": "Job Role already existed"
+        })
     
     def test_update_JobRole_by_nonexistingid(self):
         response = self.client.put("/api/jobrole/100")
@@ -902,6 +928,7 @@ class TestUpdateSkill(TestApp):
                 },
             "message": "Skill has been successfully updated!"
         })
+        
     
     def test_update_Skill_by_nonexistingid(self):
         response = self.client.put("/api/skill/100")
