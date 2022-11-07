@@ -400,7 +400,6 @@ class TestGetJobRoleById(TestApp):
             "message": "No such jobrole record found"
         })
 
-'''
 class TestGetJobRoleByStatus(TestApp):
     def test_get_JobRole_by_ActiveStatus(self):
         jr1 = JobRole(Job_Role_Name='Video Producer', Job_Role_Desc='Produce Weekly Video')
@@ -495,7 +494,6 @@ class TestGetJobRoleByStatus(TestApp):
             "code": 404,
             "message": "There are no available Job Role."
         })
-'''
 
 class TestGetAllJobRole(TestApp):
     def test_get_all_JobRole(self):
@@ -539,7 +537,6 @@ class TestGetAllJobRole(TestApp):
 
       
 ## Update Job Role
-'''
 
 class TestUpdateJobRole(TestApp):
     def test_update_jobrole(self):
@@ -585,7 +582,6 @@ class TestUpdateJobRole(TestApp):
             "message": "No such job role record found."
         })
 
-'''
 
 """
 Skills
