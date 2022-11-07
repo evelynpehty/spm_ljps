@@ -1,4 +1,4 @@
-<template>
+<template>  
   <Loading v-show="loading" />
   <Modal v-if="modalActive" :modalMessage="modalMessage" :btnActive="btnActive" v-on:close-modal="closeModal" v-on:btn-yes="btnYes" v-on:btn-no="btnNo"/>
 
@@ -30,19 +30,26 @@
     <div class="card border-0 shadow p-3 mb-5 bg-white rounded">
       <div class="card-body">
         <form @submit.prevent v-on:submit="checkForm">
-          <div class="mb-3">
-            <label for="JobRoleName" class="form-label">Job Role Name</label>
-            <input type="text" class="form-control form-control-md input-border-color" id="JobRoleName" placeholder="e.g. Software Engineer" v-model="JobRoleName">
+          <div class="row mb-3">
+              <div class="col-md-8">
+                <label for="JobRoleName" class="form-label">Job Role Name</label>
+                <input type="text" class="form-control form-control-md input-border-color" id="JobRoleName" placeholder="e.g. Software Engineer" v-model="JobRoleName">
+              </div>
+              <div class="col-md-4">
+                <label for="SkillName" class="form-label">Job Role Status</label>
+                <div class="mt-2">
+                  <span class="me-2">Inactive</span>
+                  <Toggle v-model="value" />
+                  <span class="ms-2">Active</span>
+                </div>
+              </div>
           </div>
 
-          <div class="mb-3">
-            <label for="JobRoleDesc" class="form-label">Job Role Description</label>
-            <textarea class="form-control form-control-md input-border-color" placeholder="e.g. Will be tasked to code the frontend of application." id="floatingTextarea" style="height: 100px;" v-model="JobRoleDesc"></textarea>
-          </div>
-
-          <div class="mb-3">
-            <label for="JobRoleStatus" class="form-label">Job Role Status</label>
-            <input type="text" class="form-control form-control-md input-border-color" id="JobRoleName" placeholder="e.g. Retired/Active" v-model="JobRoleStatus">
+          <div class="row mb-3">
+            <div class="coll">
+              <label for="JobRoleDesc" class="form-label">Job Role Description</label>
+              <textarea class="form-control form-control-md input-border-color" placeholder="e.g. Will be tasked to code the frontend of application." id="floatingTextarea" style="height: 100px;" v-model="JobRoleDesc"></textarea>
+            </div>
           </div>
 
           <div v-if="boolSkills" class="mb-3">
@@ -72,7 +79,7 @@
             />
           </div>
 
-          <div class="d-grid mb-2">
+          <div class="d-grid row mb-2">
             <button v-if="changes" type="submit" class="btn btn-success p-2">Update</button>
             <button v-else type="submit" class="btn btn-success p-2" disabled>Update</button>
           </div>
@@ -86,6 +93,7 @@
 import Modal from "/src/components/Modal";
 import Loading from "/src/components/Loading";
 import VueMultiselect from 'vue-multiselect';
+import Toggle from '@vueform/toggle'
 
 export default {
   name: "UpdateJobRole",
@@ -94,6 +102,7 @@ export default {
     Modal,
     Loading,
     VueMultiselect,
+    Toggle
   },
 
   data () {
@@ -104,7 +113,6 @@ export default {
       JobRoleDesc : "",
       JobRoleStatus : "",
       
-
       // Skills
       skillList : [],
       activeSkills : [],
@@ -120,7 +128,6 @@ export default {
       JobRoleStatus_Copy: "",
       skillList_Copy: [],
       selectedSkills_copy : [],
-
 
       // Component item
       loading: null,
@@ -145,7 +152,6 @@ export default {
         this.JobRoleStatus = response.data.data.Job_Role_Status
         this.skillList = response.data.data.SkillList
         
-
         this.JobRoleName_Copy = response.data.data.Job_Role_Name
         this.JobRoleDesc_Copy =  response.data.data.Job_Role_Desc
         this.JobRoleStatus_Copy = response.data.data.Job_Role_Status
@@ -197,7 +203,7 @@ export default {
 
   computed: {
       changes() {
-        if (this.JobRoleName != this.JobRoleName_Copy | this.JobRoleDesc != this.JobRoleDesc_Copy | this.JobRoleStatus != this.JobRoleStatus_Copy |this.arrayEquals(this.selectedSkills, this.selectedSkills_copy) ) {
+        if (this.value_copy != this.value | this.JobRoleName != this.JobRoleName_Copy | this.JobRoleDesc != this.JobRoleDesc_Copy |this.arrayEquals(this.selectedSkills, this.selectedSkills_copy) ) {
           return true
         } else {
           return false
@@ -233,6 +239,10 @@ export default {
         this.errors.push("Job Role Description is empty! Please enter Job Role Description.")
       }
 
+      if (this.selectedSkills.length == 0) {
+          this.errors.push("No Skills selected! Please select at least 1 skill.")
+        }
+
       if (this.JobRoleDesc.length > 255) {
         this.warnings.push("Job Description is too long! It should not exceed 255 characters. Please try again!")
       }
@@ -249,17 +259,28 @@ export default {
       this.SelectedSkills = ""
     },
 
-
     UpdateJobRole() {
+      this.loading = true
+      var selected_skillid = []
+        for(var s of this.selectedSkills){
+          selected_skillid.push(s.Skill_ID)
+        }
+
+      if (this.value == true) {
+          this.JobRoleStatus = "Active"
+        } else {
+          this.JobRoleStatus = "Retired"
+        }
+
       var json = {
         "Job_Role_Name": this.JobRoleName,  
         "Job_Role_Desc": this.JobRoleDesc,
         "Job_Role_Status": this.JobRoleStatus,
-        "Job_Role_Skills": this.selectedSkills,
+        "Job_Role_Skills": selected_skillid,
       }
-      console.log(json)
+     
       this.axios.put('http://localhost:5000/api/jobrole/'+ this.jobroleid, json).then((response) => {
-          this.modalMessage = response.data.message + " Would you like to update another job role?"
+          this.modalMessage = response.data.message + " Would you like to update again?"
           this.btnActive = true
         }).catch(error => {
             this.modalMessage = error.response.data.message 
@@ -282,12 +303,12 @@ export default {
             return true
         }
       }
-
   }
-
 }
 </script>
+<style src="@vueform/toggle/themes/default.css"></style>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
+
 <style lang="scss" scoped>
 h2 {
    margin: 0px !important;

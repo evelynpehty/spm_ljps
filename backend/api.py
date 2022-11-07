@@ -316,6 +316,14 @@ def updatejobrole(id):
 
     data = request.get_json()
     
+    jobrolename_exist = JobRole.query.filter_by(Job_Role_Name=data["Job_Role_Name"]).first()
+    if jobrolename_exist and jobrolename_exist.Job_Role_ID != id:
+        return jsonify({
+            "code": 400,           
+            "message": "Job Role already existed"
+        }), 400
+    
+    
     ## update job role name, description, and skills involved
     try:
         job_role.Job_Role_Name = data["Job_Role_Name"]
