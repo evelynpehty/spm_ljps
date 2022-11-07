@@ -807,11 +807,10 @@ class TestGetSkillByStatus(TestApp):
         db.session.add(s1)
         db.session.add(s2)
         db.session.add(s3)
- 
         db.session.commit()
         
         request_body = {
-            "Skill_Name":"Photography",
+            "Skill_Name":"Production",
             "Skill_Status": "Retired",
             "Course_Skills": []
         }
@@ -857,7 +856,7 @@ class TestGetSkillByStatus(TestApp):
         db.session.commit()
         
         request_body = {
-            "Skill_Name":"Photography",
+            "Skill_Name":"Production",
             "Skill_Status": "Retired",
             "Course_Skills": []
         }
@@ -928,7 +927,31 @@ class TestUpdateSkill(TestApp):
                 },
             "message": "Skill has been successfully updated!"
         })
+    
+    def test_update_skill_withexistingname(self):
+        s1 = Skill(Skill_Name ="Leadership")
+        s2 = Skill(Skill_Name ="Effective Communication")
+        c1 = Course(Course_ID="COR001", Course_Name="People Management", Course_Desc="Learn how to manage people", Course_Status="Active", Course_Type="Internal", Course_Category="Core")
+
+        db.session.add(s1)
+        db.session.add(s2)
+        db.session.add(c1)
+        db.session.commit()
         
+        request_body = {
+            "Skill_Name":"Effective Communication",
+            "Skill_Status": "Retired",
+            "Course_Skills": [c1.Course_ID]
+        }
+        
+        response = self.client.put("/api/skill/"+ str(s1.Skill_ID),
+                                    data=json.dumps(request_body),
+                                    content_type='application/json')
+
+        self.assertEqual(response.json, {
+            "code": 400,           
+            "message": "Skill already existed"
+        })
     
     def test_update_Skill_by_nonexistingid(self):
         response = self.client.put("/api/skill/100")
