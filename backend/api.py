@@ -166,6 +166,13 @@ def updateskill(id):
 
     data = request.get_json()
     
+    skillname_exist = Skill.query.filter_by(Skill_Name=data["Skill_Name"]).first()
+    if skillname_exist and skillname_exist.Skill_ID != id:
+        return jsonify({
+            "code": 400,           
+            "message": "Skill already existed"
+        }), 400
+    
     ## update skill name and relevant courses
     try:
         skill.Skill_Name = data["Skill_Name"]
