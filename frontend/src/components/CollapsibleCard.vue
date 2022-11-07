@@ -34,7 +34,7 @@
         },
 
         btnDelete(id) {
-            this.$emit("btn-next", id);
+            this.$emit("btn-delete", id);
         }
       }
     };

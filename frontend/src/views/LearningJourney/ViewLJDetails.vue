@@ -54,7 +54,14 @@
         </table>
       </div>
     </div>
-
+    
+    <div class="row mb-3 justify-content-center" v-if="this.coursesDetails_arr.length != 0">
+      <div class="table-responsive col-md-10">
+        <table class="table table-success table-striped">
+            <button type="button" class="btn btn-outline-success" @click="DeleteLJ(ljID)" style = "margin-left: 20px;">Delete Learning Journey</button>
+          </table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -81,6 +88,7 @@ export default {
         staff_registration_arr: [], //  all the staff's registered course details
 
         filter_coursesDetails_arr : [], // coursedetails + regis details of course in learning journey
+
 
         // Component item
         loading: null,
@@ -154,8 +162,31 @@ export default {
           })
         })
       })
+    },
+    methods: {
+      DeleteLJ(id){
+        this.ljID = id
+        this.modalMessage = "Are you sure you want to delete Learning Journey - " + id
+        this.modalActive = true  
+        this.loading = false
+        this.axios.delete("http://127.0.0.1:5000/api/learningjourney/" + id).then(response => {
+          if (response.data.code == 200) {
+            this.modalMessage = "Learning journey has been deleted successfully."}
+          else {
+            this.modalMessage = "Error occured in deleting learning journey. Please try again later." 
+          }
+        }).catch(() => {
+          this.modalMessage = "Error occured in deleting learning journey. Please try again later." 
+        }).finally(() => {
+          this.loading = false
+          this.modalActive = true
+        })
+      }
     }
-}
+  }
+  
+    
+
 </script>
 
 <style lang="scss" scoped>

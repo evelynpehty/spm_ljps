@@ -1,6 +1,6 @@
 <template>
   <Loading v-show="loading" />
-
+  <Modal v-if="modalActive" :modalMessage="modalMessage" :btnActive="btnActive" v-on:close-modal="closeModal" v-on:btn-yes="btnYes" v-on:btn-no="btnNo"/>
   <div class="container-fluid">
     <div class="row" style="margin-top:80px">
       <h2 class="title">View Learning Journey</h2>
@@ -21,7 +21,7 @@
 
         <CollapsibleCard :id="lj.Learning_Journey_ID" :targetid="lj.Learning_Journey_ID" :hidden="hidden" :cardSubtitle="'Learning Journey '+lj.Learning_Journey_ID"
         :cardTitle="lj.Job_Role_Name" :cardMessage="cardMessage" :btnName1="btnName1" :btnName2="btnName2" 
-        :btnName3="btnName3" v-on:btn-next="btnNext" v-on:btn-update="btnUpdate" v-on:btn-delete="btnNext" 
+        :btnName3="btnName3" v-on:btn-next="btnNext" v-on:btn-update="btnUpdate" v-on:btn-delete="btnDelete" 
         :btnHidden1="btnHidden1" :btnHidden2="btnHidden2" :btnHidden3="btnHidden3" :hiddenSubtitle="hiddenSubtitle"></CollapsibleCard>
 
       </div>
@@ -33,17 +33,20 @@
 <script>
 import Loading from "/src/components/Loading";
 import CollapsibleCard from "/src/components/CollapsibleCard";
+import Modal from "/src/components/Modal";
 
 export default {
     name: "ViewAllLearningJourneysPage",
 
     components: {
       Loading,
-      CollapsibleCard
+      CollapsibleCard,
+      Modal
     }, 
 
     data() {
       return {
+        userid : this.$store.state.userid, 
         // Learning Journey Item
         allLearningJourneyList:[],
         tempallLearningJourneyList:[],
@@ -64,6 +67,10 @@ export default {
         btnHidden3: "",
         hiddenSubtitle: "",
 
+        // Modal Component
+        modalActive: null,
+        btnActive: false,
+
         // Job Role Name
         LearningJourneyIDList : [],
         JobRoleIDList : [],
@@ -77,7 +84,7 @@ export default {
 
     beforeMount() {
       this.loading = true
-      this.axios.get("http://localhost:5000/api/learningjourney/"+this.$store.state.userid).then((response) => {
+      this.axios.get("http://localhost:5000/api/learningjourney/"+ this.userid).then((response) => {
         this.tempallLearningJourneyList = response.data.data.LearningJourney_List
         for(var i of this.tempallLearningJourneyList){
             (this.promises).push(this.axios.get("http://localhost:5000/api/jobrole/"+i.Job_Role_ID))
@@ -97,10 +104,36 @@ export default {
             this.loading = false 
           })
         })
-    },
-    
-  
+      },
+
   methods : {
+    closeModal() {
+      this.modalActive = !this.modalActive;
+    },
+
+    btnYes() {
+      this.loading = true
+      this.closeModal()
+      this.axios.delete("http://127.0.0.1:5000/api/learningjourney/" + this.selectedLearningJourney).then(response => {
+        if (response.data.code == 200) {
+          this.modalMessage = "Learning journey " + this.selectedLearningJourney + " has been deleted successfully."}
+        else {
+          this.modalMessage = "Error occured in deleting learning journey. Please try again later." 
+        }
+      }).catch(() => {
+        this.modalMessage = "Error occured in deleting learning journey. Please try again later." 
+      }).finally(() => {
+        this.allLearningJourneyList.splice(this.allLearningJourneyList.findIndex(e => e.Learning_Journey_ID == this.selectedLearningJourney),1)
+        this.btnActive = false
+        this.modalActive = true;
+        this.loading = false
+      })
+    },
+
+    btnNo(){
+      this.closeModal()
+    },
+
     btnNext(id){
       this.loading=true
       this.$router.push({name:"ViewLJDetails", params: { learningjourneyid: id } })
@@ -110,6 +143,13 @@ export default {
       this.loading=true
       this.$router.push({name:"UpdateLearningJourney", params: { learningjourneyid: id } })
     },
+
+    btnDelete(id){
+      this.selectedLearningJourney = id
+      this.modalActive = true
+      this.btnActive = true
+      this.modalMessage = "Are you sure you want to delete Learning Journey " + id + " ?"
+    }
   }
 }
 </script>
