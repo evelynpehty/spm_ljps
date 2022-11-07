@@ -18,8 +18,11 @@
     </div>
 
     <div class="row" v-else>
-      <div class="col-lg-3 col-md-4 col-sm-6" v-for="job in activeJobRoles" :key="job">
-        <CollapsibleCard :id="job.Job_Role_ID" :targetid="job.Job_Role_ID" :cardTitle="job.Job_Role_Name" :cardMessage="job.Job_Role_Desc" :btnName="btnName" v-on:btn-next="btnNext"></CollapsibleCard>
+      <div class="col-sm-6 col-lg-4   " v-for="job in activeJobRoles" :key="job">
+        <CollapsibleCard :id="job.Job_Role_ID" :targetid="job.Job_Role_ID" :cardSubtitle="cardSubtitle"
+        :cardTitle="job.Job_Role_Name" :cardMessage="job.Job_Role_Desc" :btnName1="btnName1" :btnName2="btnName2" 
+        :btnName3="btnName3" v-on:btn-next="btnNext" v-on:btn-update="btnUpdate" v-on:btn-delete="btnNext"
+        :btnHidden1="btnHidden1" :btnHidden2="btnHidden2" :btnHidden3="btnHidden3" :hiddenSubtitle="hiddenSubtitle"></CollapsibleCard>
       </div>
     </div>
 
@@ -49,12 +52,20 @@ export default {
 
       // Component item
       loading: null,
-      cardMessage: "",
-      targetid: "",
-      btnName: "Set as Goal",
-      id: "",
       modalActive: null,
-      btnActive: true,
+
+      targetid: "",
+      btnName1: "Set as Goal",
+      btnName2: "",
+      btnName3: "",
+      cardMessage: "",
+      hidden: "",
+      btnHidden1: "",
+      btnHidden2: "display: none",
+      btnHidden3: "display: none",
+      hiddenSubtitle: "display: none",
+      cardSubtitle: "",
+
 
       // Staff Learning Journey
       registered_job_roles: []
