@@ -153,7 +153,7 @@ def getallskills():
         "code": 404,
         "message": "There are no available skill."
     }),404
-    
+     
 @api.route("/skill/<int:id>", methods=["PUT"])
 def updateskill(id):
     skill = Skill.query.filter_by(Skill_ID=id).first()
@@ -165,6 +165,13 @@ def updateskill(id):
         }),404
 
     data = request.get_json()
+    
+    skillname_exist = Skill.query.filter_by(Skill_Name=data["Skill_Name"]).first()
+    if skillname_exist and skillname_exist.Skill_ID != id:
+        return jsonify({
+            "code": 400,           
+            "message": "Skill already existed"
+        }), 400
     
     ## update skill name and relevant courses
     try:
@@ -199,7 +206,7 @@ def updateskill(id):
             "message": "Skill has been successfully updated!"
 
         }
-    ), 201  
+    ), 201 
 
 ########################################################
 
@@ -209,6 +216,7 @@ Job Role
 - Get Job Role by ID
 - Get Job Role by Status
 - SPM-47: View All Job Roles
+- SPM-78: Update Job Roles
 """
 
 #Create A Job Role
@@ -301,6 +309,65 @@ def getalljobrole():
         "code": 404,
         "message": "There are no available Job Role."
     }),404
+
+#Update Job Roles (SPM-78: Update Job Roles)
+@api.route("/jobrole/<int:id>", methods=["PUT"])
+def updatejobrole(id):
+    job_role = JobRole.query.filter_by(Job_Role_ID=id).first()
+
+    if not job_role:
+        return jsonify({
+            "code": 404,
+            "message": "No such job role record found."
+        }),404
+
+    data = request.get_json()
+    
+    jobrolename_exist = JobRole.query.filter_by(Job_Role_Name=data["Job_Role_Name"]).first()
+    if jobrolename_exist and jobrolename_exist.Job_Role_ID != id:
+        return jsonify({
+            "code": 400,           
+            "message": "Job Role already existed"
+        }), 400
+    
+    
+    ## update job role name, description, and skills involved
+    try:
+        job_role.Job_Role_Name = data["Job_Role_Name"]
+        job_role.Job_Role_Desc = data["Job_Role_Desc"]
+        job_role.Job_Role_Status = data["Job_Role_Status"]
+        
+        skill_list = data['Job_Role_Skills']
+        skill_list_db = JobRoleSkill.query.filter_by(Job_Role_ID=id).all()
+
+        for Skill_ID in skill_list:
+            if Skill_ID not in skill_list_db:
+                job_skill = JobRoleSkill(job_role.Job_Role_ID, Skill_ID)
+                db.session.add(job_skill)
+        
+        for Skill_ID_db in skill_list_db:
+            if Skill_ID_db not in skill_list:
+                db.session.delete(Skill_ID_db)
+                
+        db.session.commit()
+
+    except: 
+        return jsonify(
+            {
+                "code": 500,
+                "message": "An error occurred while updating the job role."
+            }
+        ), 500
+
+    return jsonify(
+        {
+            "code": 201,
+            "data": job_role.json(),
+            "message": "Job Role has been successfully updated!"
+
+        }
+    ), 201 
+
 
 ########################################################
 """
