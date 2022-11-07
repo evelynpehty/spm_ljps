@@ -119,7 +119,4 @@ table {
   border-width: 0px;
 }
 
-
-
-
 </style>

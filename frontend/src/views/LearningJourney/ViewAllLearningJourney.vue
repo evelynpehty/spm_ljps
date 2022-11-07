@@ -1,6 +1,6 @@
 <template>
   <Loading v-show="loading" />
-
+  <Modal v-if="modalActive" :modalMessage="modalMessage" :btnActive="btnActive" v-on:close-modal="closeModal" v-on:btn-yes="btnYes" v-on:btn-no="btnNo"/>
   <div class="container-fluid">
     <div class="row" style="margin-top:80px">
       <h2 class="title">View Learning Journey</h2>
@@ -33,17 +33,20 @@
 <script>
 import Loading from "/src/components/Loading";
 import CollapsibleCard from "/src/components/CollapsibleCard";
+import Modal from "/src/components/Modal";
 
 export default {
     name: "ViewAllLearningJourneysPage",
 
     components: {
       Loading,
-      CollapsibleCard
+      CollapsibleCard,
+      Modal
     }, 
 
     data() {
       return {
+        userid : this.$store.state.userid, 
         // Learning Journey Item
         allLearningJourneyList:[],
         tempallLearningJourneyList:[],
@@ -64,6 +67,10 @@ export default {
         btnHidden3: "",
         hiddenSubtitle: "",
 
+        // Modal Component
+        modalActive: null,
+        btnActive: true,
+
         // Job Role Name
         LearningJourneyIDList : [],
         JobRoleIDList : [],
@@ -77,7 +84,7 @@ export default {
 
     beforeMount() {
       this.loading = true
-      this.axios.get("http://localhost:5000/api/learningjourney/"+this.$store.state.userid).then((response) => {
+      this.axios.get("http://localhost:5000/api/learningjourney/"+ this.userid).then((response) => {
         this.tempallLearningJourneyList = response.data.data.LearningJourney_List
         for(var i of this.tempallLearningJourneyList){
             (this.promises).push(this.axios.get("http://localhost:5000/api/jobrole/"+i.Job_Role_ID))
@@ -99,9 +106,33 @@ export default {
         })
       },
 
-
-  
   methods : {
+    closeModal() {
+      this.modalActive = !this.modalActive;
+    },
+
+    btnYes() {
+      this.loading = true
+      this.closeModal()
+      this.axios.delete("http://127.0.0.1:5000/api/learningjourney/" + this.selectedLearningJourney).then(response => {
+        if (response.data.code == 200) {
+          this.modalMessage = "Learning journey " + this.selectedLearningJourney + " has been deleted successfully."}
+        else {
+          this.modalMessage = "Error occured in deleting learning journey. Please try again later." 
+        }
+      }).catch(() => {
+        this.modalMessage = "Error occured in deleting learning journey. Please try again later." 
+      }).finally(() => {
+        this.btnActive = false
+        this.modalActive = true;
+        this.loading = false
+      })
+    },
+
+    btnNo(){
+      this.closeModal()
+    },
+
     btnNext(id){
       this.loading=true
       this.$router.push({name:"ViewLJDetails", params: { learningjourneyid: id } })
@@ -113,23 +144,10 @@ export default {
     },
 
     btnDelete(id){
-      this.LearningjourneyID = id
-      this.loading=true
-      this.modalActive =true
-      this.axios.delete("http://127.0.0.1:5000/api/learningjourney/" + this.id).then(response => {
-          if (response.data.code == 200) {
-            this.modalMessage = "Learning journey has been deleted successfully."}
-          else {
-            this.modalMessage = "Error occured in deleting learning journey. Please try again later." 
-          }
-        }).catch(() => {
-          this.modalMessage = "Error occured in deleting learning journey. Please try again later." 
-        }).finally(() => {
-          this.loading = false
-          this.btnActive = false
-          this.modalActive = true;
-        })
-
+      this.selectedLearningJourney = id
+      this.loading = true
+      this.modalActive = true
+      this.modalMessage = "Are you sure you want to delete Learning Journey " + id + " ?"
     }
   }
 }
