@@ -21,7 +21,7 @@
 
         <CollapsibleCard :id="lj.Learning_Journey_ID" :targetid="lj.Learning_Journey_ID" :hidden="hidden" :cardSubtitle="'Learning Journey '+lj.Learning_Journey_ID"
         :cardTitle="lj.Job_Role_Name" :cardMessage="cardMessage" :btnName1="btnName1" :btnName2="btnName2" 
-        :btnName3="btnName3" v-on:btn-next="btnNext" v-on:btn-update="btnUpdate" v-on:btn-delete="btnNext" 
+        :btnName3="btnName3" v-on:btn-next="btnNext" v-on:btn-update="btnUpdate" v-on:btn-delete="btnDelete" 
         :btnHidden1="btnHidden1" :btnHidden2="btnHidden2" :btnHidden3="btnHidden3" :hiddenSubtitle="hiddenSubtitle"></CollapsibleCard>
 
       </div>
@@ -97,8 +97,9 @@ export default {
             this.loading = false 
           })
         })
-    },
-    
+      },
+
+
   
   methods : {
     btnNext(id){
@@ -110,6 +111,26 @@ export default {
       this.loading=true
       this.$router.push({name:"UpdateLearningJourney", params: { learningjourneyid: id } })
     },
+
+    btnDelete(id){
+      this.LearningjourneyID = id
+      this.loading=true
+      this.modalActive =true
+      this.axios.delete("http://127.0.0.1:5000/api/learningjourney/" + this.id).then(response => {
+          if (response.data.code == 200) {
+            this.modalMessage = "Learning journey has been deleted successfully."}
+          else {
+            this.modalMessage = "Error occured in deleting learning journey. Please try again later." 
+          }
+        }).catch(() => {
+          this.modalMessage = "Error occured in deleting learning journey. Please try again later." 
+        }).finally(() => {
+          this.loading = false
+          this.btnActive = false
+          this.modalActive = true;
+        })
+
+    }
   }
 }
 </script>
