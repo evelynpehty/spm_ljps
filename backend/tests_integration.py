@@ -1133,7 +1133,7 @@ class TestGetLearningJourneybyID(TestApp):
             "message": "No such learning journey found"
         }) 
 
-'''
+
 ## Delete Learning Journey by ID
 class DeleteLearningJourneybyID(TestApp):
     def test_Delete_LearningJourney_by_ID(self):
@@ -1174,7 +1174,7 @@ class DeleteLearningJourneybyID(TestApp):
                 "code": 404,
                 "message": "Learning Journey does not exist"
             }) 
-'''        
+      
 
 """
 Learning Journey Item

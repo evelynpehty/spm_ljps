@@ -69,7 +69,7 @@ export default {
 
         // Modal Component
         modalActive: null,
-        btnActive: true,
+        btnActive: false,
 
         // Job Role Name
         LearningJourneyIDList : [],
@@ -123,6 +123,7 @@ export default {
       }).catch(() => {
         this.modalMessage = "Error occured in deleting learning journey. Please try again later." 
       }).finally(() => {
+        this.allLearningJourneyList.splice(this.allLearningJourneyList.findIndex(e => e.Learning_Journey_ID == this.selectedLearningJourney),1)
         this.btnActive = false
         this.modalActive = true;
         this.loading = false
@@ -145,8 +146,8 @@ export default {
 
     btnDelete(id){
       this.selectedLearningJourney = id
-      this.loading = true
       this.modalActive = true
+      this.btnActive = true
       this.modalMessage = "Are you sure you want to delete Learning Journey " + id + " ?"
     }
   }
