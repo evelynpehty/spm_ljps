@@ -153,7 +153,7 @@ def getallskills():
         "code": 404,
         "message": "There are no available skill."
     }),404
-    
+     
 @api.route("/skill/<int:id>", methods=["PUT"])
 def updateskill(id):
     skill = Skill.query.filter_by(Skill_ID=id).first()
@@ -199,7 +199,7 @@ def updateskill(id):
             "message": "Skill has been successfully updated!"
 
         }
-    ), 201  
+    ), 201 
 
 ########################################################
 
@@ -209,7 +209,7 @@ Job Role
 - Get Job Role by ID
 - Get Job Role by Status
 - SPM-47: View All Job Roles
-- Update Job Role
+- SPM-78: Update Job Roles
 """
 
 #Create A Job Role
@@ -303,31 +303,32 @@ def getalljobrole():
         "message": "There are no available Job Role."
     }),404
 
-# Update Job Role
+#Update Job Roles (SPM-78: Update Job Roles)
 @api.route("/jobrole/<int:id>", methods=["PUT"])
 def updatejobrole(id):
-    jobrole = JobRole.query.filter_by(Job_Role_ID=id).first()
+    job_role = JobRole.query.filter_by(Job_Role_ID=id).first()
 
-    if not jobrole:
+    if not job_role:
         return jsonify({
             "code": 404,
-            "message": "No such jobrole record found."
+            "message": "No such job role record found."
         }),404
 
     data = request.get_json()
     
-    ## update job role name and relevant skills
+    ## update job role name, description, and skills involved
     try:
-        jobrole.Job_Role_Name = data["Job_Role_Name"]
-        jobrole.Job_Role_Desc = data["Job_Role_Desc"]
-        jobrole.Job_Role_Status = data["Job_Role_Status"]
+        job_role.Job_Role_Name = data["Job_Role_Name"]
+        job_role.Job_Role_Desc = data["Job_Role_Desc"]
+        job_role.Job_Role_Status = data["Job_Role_Status"]
+        
         skill_list = data['Job_Role_Skills']
         skill_list_db = JobRoleSkill.query.filter_by(Job_Role_ID=id).all()
 
         for Skill_ID in skill_list:
             if Skill_ID not in skill_list_db:
-                jobrole_skill = JobRoleSkill(jobrole.Job_Role_ID, Skill_ID)
-                db.session.add(jobrole_skill)
+                job_skill = JobRoleSkill(job_role.Job_Role_ID, Skill_ID)
+                db.session.add(job_skill)
         
         for Skill_ID_db in skill_list_db:
             if Skill_ID_db not in skill_list:
@@ -346,11 +347,12 @@ def updatejobrole(id):
     return jsonify(
         {
             "code": 201,
-            "data": jobrole.json(),
+            "data": job_role.json(),
             "message": "Job Role has been successfully updated!"
 
         }
-    ), 201
+    ), 201 
+
 
 ########################################################
 """
