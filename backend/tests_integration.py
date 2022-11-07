@@ -1,7 +1,7 @@
 import unittest
 import json
 from flask_testing import TestCase
-from models import db, CourseSkill, JobRoleSkill, JobRole, Skill, Course, Registration, LearningJourney, LearningJourneyItem, Staff
+from models import db, Role, CourseSkill, JobRoleSkill, JobRole, Skill, Course, Registration, LearningJourney, LearningJourneyItem, Staff
 from application import create_app
 
 app = create_app()
@@ -237,8 +237,15 @@ Registration
 """
 class TestGetRegistrationByStaff(TestApp):
     def test_get_registration_by_staff(self):
-        st1 = Staff(Staff_FName='Peh', Staff_LName='Ting Yu', Dept="Human Resource", Email="pehtingyu@gmail.com", Role=1)
-        st2 = Staff(Staff_FName='Evelyn', Staff_LName='Peh Ting Yu', Dept="Sales", Email="pehtingyu@gmail.com", Role=2)
+        role1 = Role(Role_Name = "Admin")
+        role2 = Role(Role_Name = "User")
+        
+        db.session.add(role1)
+        db.session.add(role2)
+        db.session.commit()
+        
+        st1 = Staff(Staff_FName='Peh', Staff_LName='Ting Yu', Dept="Human Resource", Email="pehtingyu@gmail.com", Role=role1.Role_ID)
+        st2 = Staff(Staff_FName='Evelyn', Staff_LName='Peh Ting Yu', Dept="Sales", Email="pehtingyu@gmail.com", Role=role2.Role_ID)
 
         db.session.add(st1)
         db.session.add(st2)
@@ -917,8 +924,14 @@ Learning Journey
 ## Create Learning Journey
 class TestCreateLearningJourney(TestApp):
     def test_create_LearningJourney(self):
+        
+        role1 = Role(Role_Name = "Admin")
+        
+        db.session.add(role1)
+        db.session.commit()
+        
         jr1 = JobRole(Job_Role_Name='Video Producer', Job_Role_Desc='Produce Weekly Video')
-        st1 = Staff(Staff_FName='Peh', Staff_LName='Ting Yu', Dept="Human Resource", Email="pehtingyu@gmail.com", Role=1)
+        st1 = Staff(Staff_FName='Peh', Staff_LName='Ting Yu', Dept="Human Resource", Email="pehtingyu@gmail.com", Role=role1.Role_ID)
         c1 = Course(Course_ID="COR001", Course_Name="People Management", Course_Desc="Learn how to manage people", Course_Status="Active", Course_Type="Internal", Course_Category="Core")
         c2 = Course(Course_ID="COR002", Course_Name="Effective Communication", Course_Desc="Learn how to communicate effectively", Course_Status="Active", Course_Type="Internal", Course_Category="Core")
         
@@ -964,9 +977,17 @@ class TestCreateLearningJourney(TestApp):
 ## Get Learning Journey by Staff
 class TestGetLearningJourneybyStaff(TestApp):
     def test_Get_LearningJourney_by_Staff(self):
+        
+        role1 = Role(Role_Name = "Admin")
+        role2 = Role(Role_Name = "User")
+        
+        db.session.add(role1)
+        db.session.add(role2)
+        db.session.commit()
+        
         jr1 = JobRole(Job_Role_Name='Video Producer', Job_Role_Desc='Produce Weekly Video')
-        st1 = Staff(Staff_FName='Peh', Staff_LName='Ting Yu', Dept="Human Resource", Email="evelyn@gmail.com", Role=1)
-        st2 = Staff(Staff_FName='Evelyn', Staff_LName='Peh Ting Yu', Dept="Sales", Email="pehtingyu@gmail.com", Role=2)
+        st1 = Staff(Staff_FName='Peh', Staff_LName='Ting Yu', Dept="Human Resource", Email="evelyn@gmail.com", Role=role1.Role_ID)
+        st2 = Staff(Staff_FName='Evelyn', Staff_LName='Peh Ting Yu', Dept="Sales", Email="pehtingyu@gmail.com", Role=role2.Role_ID)
         c1 = Course(Course_ID="COR001", Course_Name="People Management", Course_Desc="Learn how to manage people", Course_Status="Active", Course_Type="Internal", Course_Category="Core")
 
         db.session.add(jr1)
@@ -1019,8 +1040,12 @@ class TestGetLearningJourneybyStaff(TestApp):
 ## Get Learning Journey by ID
 class TestGetLearningJourneybyID(TestApp):
     def test_Get_LearningJourney_by_ID(self):
+        role1 = Role(Role_Name = "Admin")
+        db.session.add(role1)
+        db.session.commit()
+        
         jr1 = JobRole(Job_Role_Name='Video Producer', Job_Role_Desc='Produce Weekly Video')
-        st1 = Staff(Staff_FName='Peh', Staff_LName='Ting Yu', Dept="Human Resource", Email="evelyn@gmail.com", Role=1)
+        st1 = Staff(Staff_FName='Peh', Staff_LName='Ting Yu', Dept="Human Resource", Email="evelyn@gmail.com", Role=role1.Role_ID)
         c1 = Course(Course_ID="COR001", Course_Name="People Management", Course_Desc="Learn how to manage people", Course_Status="Active", Course_Type="Internal", Course_Category="Core")
 
         db.session.add(jr1)
@@ -1066,8 +1091,13 @@ class TestGetLearningJourneybyID(TestApp):
 ## Delete Learning Journey by ID
 class DeleteLearningJourneybyID(TestApp):
     def test_Delete_LearningJourney_by_ID(self):
+        role1 = Role(Role_Name = "Admin")
+        
+        db.session.add(role1)
+        db.session.commit()
+    
         jr1 = JobRole(Job_Role_Name='Video Producer', Job_Role_Desc='Produce Weekly Video')
-        st1 = Staff(Staff_FName='Peh', Staff_LName='Ting Yu', Dept="Human Resource", Email="evelyn@gmail.com", Role=1)
+        st1 = Staff(Staff_FName='Peh', Staff_LName='Ting Yu', Dept="Human Resource", Email="evelyn@gmail.com", Role=role1.Role_ID)
         c1 = Course(Course_ID="COR001", Course_Name="People Management", Course_Desc="Learn how to manage people", Course_Status="Active", Course_Type="Internal", Course_Category="Core")
 
         db.session.add(jr1)
@@ -1108,8 +1138,12 @@ Learning Journey Item
 #Create Learning Journey Item
 class CreateLearningJourneyItem(TestApp):
     def test_Create_LearningJourneyItem(self):
+        role1 = Role(Role_Name = "Admin")
+        db.session.add(role1)
+        db.session.commit()
+        
         jr1 = JobRole(Job_Role_Name='Video Producer', Job_Role_Desc='Produce Weekly Video')
-        st1 = Staff(Staff_FName='Peh', Staff_LName='Ting Yu', Dept="Human Resource", Email="evelyn@gmail.com", Role=1)
+        st1 = Staff(Staff_FName='Peh', Staff_LName='Ting Yu', Dept="Human Resource", Email="evelyn@gmail.com", Role=role1.Role_ID)
         c1 = Course(Course_ID="COR001", Course_Name="People Management", Course_Desc="Learn how to manage people", Course_Status="Active", Course_Type="Internal", Course_Category="Core")
         c2 = Course(Course_ID="COR200", Course_Name="Effective Communication", Course_Desc="Learn how to communicate effectively", Course_Status="Active", Course_Type="Internal", Course_Category="Core")
 
@@ -1139,8 +1173,12 @@ class CreateLearningJourneyItem(TestApp):
 ## Delete Learning Journey Item by Course and LJ-ID
 class DeleteLearningJourneyItem(TestApp):
     def test_Delete_LearningJourney_by_CourseandLJid(self):
+        role1 = Role(Role_Name = "Admin")
+        db.session.add(role1)
+        db.session.commit()
+        
         jr1 = JobRole(Job_Role_Name='Video Producer', Job_Role_Desc='Produce Weekly Video')
-        st1 = Staff(Staff_FName='Peh', Staff_LName='Ting Yu', Dept="Human Resource", Email="evelyn@gmail.com", Role=1)
+        st1 = Staff(Staff_FName='Peh', Staff_LName='Ting Yu', Dept="Human Resource", Email="evelyn@gmail.com", Role=role1.Role_ID)
         c1 = Course(Course_ID="COR001", Course_Name="People Management", Course_Desc="Learn how to manage people", Course_Status="Active", Course_Type="Internal", Course_Category="Core")
 
         db.session.add(jr1)
