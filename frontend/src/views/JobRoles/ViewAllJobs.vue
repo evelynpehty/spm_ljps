@@ -15,15 +15,15 @@
           <thead class="table-success">
             <tr>
               <th scope="col">Job Role Title</th>
-              <th scope="col">Job Role Description</th>
+              <th scope="col" class="w-50">Job Role Description</th>
               <th scope="col">Job Role Status</th>
-              <th scope="col"></th>
+              <th scope="col" class="w25"></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="val in roleData" :key="val.Title">
               <td>{{ val.Title }}</td>
-              <td>{{ val.Desc }}</td>
+              <td class="w-50">{{ val.Desc }}</td>
               <td>{{ val.Status }}</td>
               <td class="text-end">
                 <button type="button" class="btn btn-outline-success" @click="ViewJobDetails(val.JobRoleID)">
