@@ -1,7 +1,7 @@
 <template>
       
     <div class="container-fluid">
-      <div class="row" style="margin-top:80px">
+      <div class="row" style="margin-top:100px">
         <h3>Hello {{name}}</h3>
       </div>
     </div>

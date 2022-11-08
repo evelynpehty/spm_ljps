@@ -1,51 +1,69 @@
 <template>
   <Loading v-show="loading" />
-
-  <div class="container">
-  <div v-if = "error.length == 0">
-          <div class="row" style="margin-top:100px">
-            <div class = "col-4">
-              <div class = "card">
-                <h2 class="title">Job Role Name</h2>
-                <p class="title">{{JobRoleName}}</p>
-              </div>
-            </div>
-
-            <div class = "col-4">
-              <div class = "card">
-                <h2 class="title">Job Role Description</h2>
-                <p class="title">{{JobRoleDesc}}</p>
-              </div>
-            </div>
-
-            <div class = "col-4">
-              <div class = "card">
-                <h2 class="title">Job Role Status</h2>
-                <p class="title">{{JobRoleStatus}}</p>
-              </div>
-            </div>
-
-            <br>
-              <h2 class="title" style = "margin-top: 100px;">Job Role Skills</h2>
-              <p v-if = "this.skillID.length == 0"  class="title">No associated skills with Job Role: {{JobRoleName}}</p>
-              <br>
-              <div v-if = "this.skillID.length != 0" class = "container" style = "margin: auto;">
-                <table class = "table table-striped" border = "1">
-                  <tr>
-                    <th>Skill Name</th>
-                    <th>Skill Status</th>
-                  </tr>
-                  <tr v-for = "val in skillList" :key = "val.Skill_ID">
-                      <td>{{val.Skill_Name}}</td>
-                      <td>{{val.Skill_Status}}</td>
-                  </tr>
-              </table>
-              </div>
-          </div>
+  <div class="container-fluid">
+    <div class="row" style="margin-top:100px">
+      <div class="col-12">
+        <h2 class="title">View Job Role Details </h2>
+        <p class="title">This page shows the job role details of the respective job role.</p>
       </div>
-    <div v-else>
-      <div class="row" style="margin-top:100px">
-        <h1 style = "text-align: center;">{{this.error}}</h1> 
+    </div>
+
+    <div v-if="error.length == 0">
+      <div class="row mb-5 g-2 justify-content-center">
+        <div class="col-sm-6 col-md-4">
+          <div class="card">
+            <div class="card-header border-bottom-0 text-center justify-content-center">
+                <h6 class="card-title mt-2">Job Role Name</h6>
+                <h5 class="card-title">{{this.JobRoleName}}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="card">
+            <div class="card-header border-bottom-0 text-center justify-content-center">
+                <h6 class="card-title mt-2">Job Role Description</h6>
+                <h5 class="card-title">{{this.JobRoleDesc}}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <div class="card">
+            <div class="card-header border-bottom-0 text-center justify-content-center">
+                <h6 class="card-title mt-2">Job Role Status</h6>
+                <h5 class="card-title">{{this.JobRoleStatus}}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3 justify-content-center" v-if="this.skillID.length == 0">
+        <div class="col-sm-12">
+          <div class="alert alert-danger show mb-5" role="alert">
+            <h4 class="text-center m-0">No Associated Skills with Job Role: {{JobRoleName}}</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3 justify-content-center" v-else>
+        <div class="col-sm-12">
+            <h2>Associated Skills</h2>
+        </div>
+        <div class="table-responsive col-sm-12">
+          <table class="table table-striped">
+            <thead class="table-success">
+              <tr>
+                <th>Skill Name</th>
+                <th>Skill Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for = "val in skillList" :key = "val.Skill_ID">
+                <td>{{val.Skill_Name}}</td>
+                <td>{{val.Skill_Status}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -114,7 +132,7 @@ export default {
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
 
-<style>
+<style lang="scss" scoped>
 h2 {
    margin: 0px !important;
 }
@@ -122,20 +140,5 @@ h2 {
 .title {
   text-align: center;
 }
-
-table {
-text-align: center;
-border: 1px solid black;
-border-spacing: 0px;
-border-width: 0px;
-padding: 0px;
-border-width: 0px;
-}
-
-.card{
-padding-top: 10px;
-margin-bottom: 50px;
-}
-
 
 </style>

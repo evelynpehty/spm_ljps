@@ -3,7 +3,7 @@
   <Modal v-if="modalActive" :modalMessage="modalMessage" :btnActive="btnActive" v-on:close-modal="closeModal" v-on:btn-yes="btnYes" v-on:btn-no="btnNo"/>
 
   <div class="container-fluid">
-    <div class="row" style="margin-top:80px">
+    <div class="row" style="margin-top:100px">
       <h2 class="title">Create Skills</h2>
       <p class="title">Please fill in the required fields to successfully create a skills.</p>
     </div>

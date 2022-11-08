@@ -2,7 +2,7 @@
   <Loading v-show="loading" />
   <Modal v-if="modalActive" :modalMessage="modalMessage" :btnActive="btnActive" v-on:close-modal="closeModal" v-on:btn-yes="btnYes" v-on:btn-no="btnNo"/>
     <div class="container-fluid">
-        <div class="row" style="margin-top:80px">
+        <div class="row" style="margin-top:100px">
             <h2 class="title">Choose Your Course</h2>
             <p class="title">You may click on the course name for more details of the course</p>
         </div>
@@ -32,13 +32,17 @@
                 </div>
             </div>
             <div class="row" style="margin-top:20px">
-            <div class="d-grid mb-2">
-               <button type="button" class="btn btn-success p-2" @click="CreateLJ()">Create Learning Journey</button>
+                <div class="d-grid mb-2">
+                <button type="button" class="btn btn-success p-2" @click="CreateLJ()">Create Learning Journey</button>
+                </div>
             </div>
         </div>
-        </div>
-        <div v-else>
-            <h3> No Available Skills </h3>
+        <div class="row mb-3 justify-content-center" v-else>
+            <div class="col-sm-12 col-md-10">
+                <div class="alert alert-danger show mb-5" role="alert">
+                    <h4 class="text-center m-0">No Available Skills</h4>
+                </div>
+            </div>
         </div>
         
         
@@ -210,7 +214,13 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+h2 {
+    margin: 0px !important;
+}
+.title {
+    text-align: center;
+}
 .accordion-button::after {
     background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
  }

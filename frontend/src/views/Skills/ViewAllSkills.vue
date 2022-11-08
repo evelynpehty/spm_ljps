@@ -4,43 +4,51 @@
   <Modal v-if="modalActive" :modalMessage="modalMessage" :btnActive="btnActive" v-on:close-modal="closeModal"
     v-on:btn-yes="btnYes" v-on:btn-no="btnNo" />
   <div class="container-fluid">
-    <div class="row" style="margin-top:80px">
+    <div class="row" style="margin-top:100px">
       <h2 class="title">View All Skills</h2>
-      <p class="title">View all active and retired skills</p>
+      <p class="title">View all skills and their respective details</p>
+    </div>
+
+    <div class="row mb-3 justify-content-center" v-if="error.length == 0">
+      <div class="table-responsive col-md-10">
+        <table class="table table-striped">
+          <thead class="table-success">
+            <tr>
+              <th scope="col">Skill Name</th>
+              <th scope="col">Skill Status</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="val in skillData" :key="val.skillName">
+              <td>{{ val.skillName }}</td>
+              <td>{{ val.skillStatus }}</td>
+              <td class="text-end">
+                <button type="button" class="btn btn-outline-success" @click="ViewSkillDetails(val.skillID)">
+                  <font-awesome-icon icon="fa-solid fa-eye"  />
+                </button>
+                <button type="button" class="btn btn-outline-success ms-2" @click="UpdateSkill(val.skillID)" >
+                  <font-awesome-icon icon="fa-solid fa-pen" />
+                </button>
+                <button :disabled="val.skillStatus != 'Active'" type="button" class="btn btn-outline-success ms-2" @click="DeleteSkill(val.skillID)">
+                  <font-awesome-icon icon="fa-solid fa-trash"/>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row" v-else>
+      <div class="col col-md-4"></div>
+      <div class="col col-md-4 text-center">
+        <img class="img-fluid mb-3" src="../../assets/images/nodata.svg" />
+        <h3>No Skills Registered...</h3>
+      </div>
+      <div class="col col-md-4"></div>
     </div>
   </div>
-  <br>
-
-
-  <div v-if="error.length == 0">
-    <div id="main-container" class="container" style="margin: auto;">
-      <table id="rolesTable" class="table table-striped" border="1">
-        <tr>
-          <th style="text-align: center;">Skill Name</th>
-          <th style="text-align: center;">Skill Status</th>
-          <!--<th style = "text-align: center;">Job Role Status</th>-->
-          <th style="text-align: center;">Actions</th>
-        </tr>
-        <tr v-for="val in skillData" :key="val.skillName">
-          <td>{{ val.skillName }}</td>
-          <td>{{ val.skillStatus }}</td>
-          <td>
-
-            <button type="button" class="btn btn-outline-success" @click="ViewSkillDetails(val.skillID)">View</button>
-            <button type="button" class="btn btn-outline-success" @click="UpdateSkill(val.skillID)"
-              style="margin-left: 20px;">Update</button>
-            <button :disabled="val.skillStatus != 'Active'" type="button" class="btn btn-outline-success"
-              @click="DeleteSkill(val.skillID)" style="margin-left: 20px;">Delete</button>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </div>
-
-  <div v-else>
-    <h1 style="text-align: center;">{{ error }}</h1>
-  </div>
-
 </template>
 
 <script>
@@ -153,9 +161,7 @@ export default {
 }
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.css">
-
-</style>
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
 
 <style lang="scss" scoped>
 h2 {
@@ -164,25 +170,5 @@ h2 {
 
 .title {
   text-align: center;
-}
-
-th {
-  background-color: #5D726A;
-  color: white;
-  text-align: center;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-
-table {
-  text-align: center;
-  border: 1px solid black;
-  border-spacing: 0px;
-  border-width: 0px;
-  padding: 0px;
-  border-width: 0px;
 }
 </style>

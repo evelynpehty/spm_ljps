@@ -3,7 +3,7 @@
   <Modal v-if="modalActive" :modalMessage="modalMessage" :btnActive="btnActive" v-on:close-modal="closeModal" v-on:btn-yes="btnYes" v-on:btn-no="btnNo"/>
 
   <div class="container-fluid">
-    <div class="row" style="margin-top:80px">
+    <div class="row" style="margin-top:100px">
       <h2 class="title">Update Job Role</h2>
       <p class="title">Please edit the required fields accordingly to update job role</p>
     </div>

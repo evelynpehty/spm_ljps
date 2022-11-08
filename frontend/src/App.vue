@@ -114,6 +114,6 @@ export default {
 
   .table-success {
     --bs-table-color : white !important;
-    --bs-table-bg : #5D726A !important;
+    --bs-table-bg :  #5D726A!important;
   }
   </style>

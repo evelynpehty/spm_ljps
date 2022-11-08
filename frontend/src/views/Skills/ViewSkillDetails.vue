@@ -1,42 +1,59 @@
 <template>
     <Loading v-show="loading" />
-    <div class="container">
-        <div v-if="error.length == 0">
+    <div class="container-fluid">
+        <div class="row" style="margin-top:100px">
+            <div class="col-12">
+                <h2 class="title">View Skills Details </h2>
+                <p class="title">This page shows the skill details of the respective skill.</p>
+            </div>
+        </div>
 
-            <div class="row" style="margin-top: 10%">
-                <div class="col-6">
+        <div v-if="error.length == 0">
+            <div class="row mb-5 g-2 justify-content-center">
+                <div class="col-sm-6 col-md-5">
                     <div class="card">
-                        <h2 class="title"> Skill Name </h2>
-                        <p class="title">{{skillName}}</p>
+                        <div class="card-header border-bottom-0 text-center justify-content-center">
+                            <h6 class="card-title mt-2">Skill Name</h6>
+                            <h5 class="card-title">{{this.skillName}}</h5>
+                        </div>
                     </div>
                 </div>
-
-                <div class="col-6">
-                    <div class="card">
-                        <h2 class="title"> Skill Status </h2>
-                        <p class="title">{{skillStatus}}</p>
+                <div class="col-sm-6 col-md-5">
+                        <div class="card">
+                        <div class="card-header border-bottom-0 text-center justify-content-center">
+                            <h6 class="card-title mt-2">Skill Status</h6>
+                            <h5 class="card-title">{{this.skillStatus}}</h5>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div v-if="courseIDs.length == 0">
-                    <h2 class="title"> No Available Courses for this skill </h2>
+            <div class="row mb-3 justify-content-center" v-if="courseIDs.length == 0">
+                <div class="col-sm-12 col-md-10">
+                    <div class="alert alert-danger show mb-5" role="alert">
+                        <h4 class="text-center m-0">No Available Courses</h4>
+                    </div>
                 </div>
+            </div>
 
-                <div v-else>
-                    <h2> Courses </h2>
-                    <table class="table table-striped" border = "1">
-                        <tr>
-                            <th>Course ID</th>
-                            <th>Course Name</th>
-                            <th>Course Desc</th>
-                            <th>Course Category</th>
-                            <th>Course Type</th>
-                            <th>Course Status</th>
-                        </tr>
-
-                        <tr v-for="course in courseList" :key="course.Course_ID">
+            <div class="row mb-3 justify-content-center" v-else>
+                <div class="col-sm-12 col-md-10">
+                    <h2>Courses</h2>
+                </div>
+                <div class="table-responsive col-sm-12 col-md-10">
+                    <table class="table table-striped">
+                        <thead class="table-success">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="course in courseList" :key="course.Course_ID">
                             <td>{{course.Course_ID}}</td>
                             <td>{{course.Course_Name}}</td>
                             <td>{{course.Course_Desc}}</td>
@@ -44,40 +61,53 @@
                             <td>{{course.Course_Type}}</td>
                             <td>{{course.Course_Status}}</td>
                         </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="row">
-                <div v-if="jobRoleIDs.length == 0">
-                    <h2 class="title"> No Available Job Roles for this skill </h2>
-                </div>
-
-                <div v-else>
-                    <h2> Job Roles </h2>
-                    <table class="table table-striped" border = "1">
-                        <tr>
-                            <th>Job Role ID</th>
-                            <th>Job Role Name</th>
-                            <th>Job Role Desc</th>
-                            <th>Job Role Status</th>
-                        </tr>
-
-                        <tr v-for="role in jobRoleList" :key="role.Job_Role_ID">
-                            <td>{{role.Job_Role_ID}}</td>
-                            <td>{{role.Job_Role_Name}}</td>
-                            <td>{{role.Job_Role_Desc}}</td>
-                            <td>{{role.Job_Role_Status}}</td>
-                        </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
 
+            <div class="row mb-3 justify-content-center" v-if="jobRoleIDs.length == 0">
+                <div class="col-sm-12 col-md-10">
+                    <div class="alert alert-danger show mb-5" role="alert">
+                        <h4 class="text-center m-0">No Available Job Roles</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3 justify-content-center" v-else>
+                <div class="col-sm-12 col-md-10">
+                    <h2>Job Roles</h2>
+                </div>
+                <div class="table-responsive col-sm-12 col-md-10">
+                    <table class="table table-striped">
+                        <thead class="table-success">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="role in jobRoleList" :key="role.Job_Role_ID">
+                                <td>{{role.Job_Role_ID}}</td>
+                                <td>{{role.Job_Role_Name}}</td>
+                                <td>{{role.Job_Role_Desc}}</td>
+                                <td>{{role.Job_Role_Status}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
-        <div v-else>
-            <div class="row" style="margin-top:100px">
-                <h1 style = "text-align: center;">{{this.error}}</h1> 
+        <div class="row m-0 mt-3" v-else>
+            <div class="col col-md-4 p-0"></div>
+            <div class="col col-md-4 text-center p-0 m-0">
+                <img class="img-fluid mb-3" src="../../assets/images/errors.svg" />
+                <h3>{{this.error}}</h3>
             </div>
+            <div class="col col-md-4"></div>
         </div>
 
     </div>
@@ -175,19 +205,4 @@ h2 {
 .title {
   text-align: center;
 }
-
-table {
-text-align: center;
-border: 1px solid black;
-border-spacing: 0px;
-border-width: 0px;
-padding: 0px;
-border-width: 0px;
-}
-
-.card{
-padding-top: 10px;
-margin-bottom: 50px;
-}
-
 </style>
