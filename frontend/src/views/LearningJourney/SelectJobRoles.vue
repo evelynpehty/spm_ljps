@@ -3,7 +3,7 @@
   <Modal v-if="modalActive" :modalMessage="modalMessage" :btnActive="btnActive" v-on:close-modal="closeModal" v-on:btn-yes="btnYes" v-on:btn-no="btnNo"/>
 
   <div class="container-fluid">
-    <div class="row" style="margin-top:80px">
+    <div class="row" style="margin-top:100px">
       <h2 class="title">Start a New Learning Journey Now</h2>
       <p class="title">Please select a job role below to view the necessary skills and courses needed.</p>
     </div>
@@ -123,15 +123,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  h2 {
-    margin: 0px !important;
-  }
-
-  h3 {
-    color: #AF8171 !important;
-  }
-
-  .title {
-    text-align: center;
-  }
+h2 {
+  margin: 0px !important;
+}
+.title {
+  text-align: center;
+}
 </style>

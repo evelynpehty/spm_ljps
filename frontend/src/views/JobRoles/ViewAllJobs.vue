@@ -4,44 +4,53 @@
     v-on:btn-yes="btnYes" v-on:btn-no="btnNo" />
 
   <div class="container-fluid">
-    <div class="row" style="margin-top:80px">
-      <h2 class="title">View All Roles</h2>
+    <div class="row" style="margin-top:100px">
+      <h2 class="title">View All Job Roles</h2>
       <p class="title">View all available job roles and their respective details</p>
     </div>
-  </div>
-  <br>
 
+    <div class="row mb-3 justify-content-center" v-if="error.length == 0">
+      <div class="table-responsive col-md-10">
+        <table class="table table-striped">
+          <thead class="table-success">
+            <tr>
+              <th scope="col">Job Role Title</th>
+              <th scope="col">Job Role Description</th>
+              <th scope="col">Job Role Status</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="val in roleData" :key="val.Title">
+              <td>{{ val.Title }}</td>
+              <td>{{ val.Desc }}</td>
+              <td>{{ val.Status }}</td>
+              <td class="text-end">
+                <button type="button" class="btn btn-outline-success" @click="ViewJobDetails(val.JobRoleID)">
+                  <font-awesome-icon icon="fa-solid fa-eye"  />
+                </button>
+                <button type="button" class="btn btn-outline-success ms-2" @click="UpdateJobRole(val.JobRoleID)" >
+                  <font-awesome-icon icon="fa-solid fa-pen" />
+                </button>
+                <button :disabled="val.Status != 'Active'" type="button" class="btn btn-outline-success ms-2" @click="DeleteJobRole(val.JobRoleID)">
+                  <font-awesome-icon icon="fa-solid fa-trash"/>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-  <div v-if="error.length == 0">
-    <div id="main-container" class="container" style="margin: auto;">
-      <table id="rolesTable" class="table table-striped" border="1">
-        <tr>
-          <th style="text-align: center;">Job Role Title</th>
-          <th style="text-align: center;">Job Role Description</th>
-          <th style="text-align: center;">Job Role Status</th>
-          <th style="text-align: center;">Actions</th>
-        </tr>
-        <tr v-for="val in roleData" :key="val.Title">
-          <td>{{ val.Title }}</td>
-          <td>{{ val.Desc }}</td>
-          <td>{{ val.Status }}</td>
-          <td>
-            <button type="button" class="btn btn-outline-success" @click="UpdateJobRole(val.JobRoleID)"
-              style="margin-right: 20px;">Update</button>
-            <button type="button" class="btn btn-outline-success" @click="ViewJobDetails(val.JobRoleID)"
-              style="margin-left: 20px;">View Details</button>
-            <button :disabled="val.Status != 'Active'" type="button" class="btn btn-outline-success"
-              @click="DeleteJobRole(val.JobRoleID)" style="margin-left: 20px;">Delete</button>
-          </td>
-        </tr>
-      </table>
+    <div class="row" v-else>
+      <div class="col col-md-4"></div>
+      <div class="col col-md-4 text-center">
+        <img class="img-fluid mb-3" src="../../assets/images/nodata.svg" />
+        <h3>No Job Roles Registered...</h3>
+      </div>
+      <div class="col col-md-4"></div>
     </div>
   </div>
-
-  <div v-else>
-    <h1 style="text-align: center;">{{ error }}</h1>
-  </div>
-
 </template>
 
 <script>
@@ -51,7 +60,8 @@ import Modal from "/src/components/Modal";
 export default {
   name: "ViewAllJobs",
   components: {
-    Loading, Modal
+    Loading, 
+    Modal
   },
 
   data() {
@@ -156,33 +166,11 @@ export default {
 
 </style>
 
-<style>
+<style lang="scss" scoped>
 h2 {
   margin: 0px !important;
 }
-
 .title {
   text-align: center;
 }
-
-th {
-  background-color: #5D726A;
-  color: white;
-  text-align: center;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-
-table {
-  text-align: center;
-  border: 1px solid black;
-  border-spacing: 0px;
-  border-width: 0px;
-  padding: 0px;
-  border-width: 0px;
-}
-
 </style>

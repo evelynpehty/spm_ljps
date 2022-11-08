@@ -12,7 +12,7 @@
   </div>
 
   <div class="container-fluid" v-else>
-    <div class="row" style="margin-top:80px">
+    <div class="row" style="margin-top:100px">
       <div class="col-12">
         <h2 class="title">View Learning Journey {{this.ljID}} Details </h2>
         <p class="title">This page shows the learning journey details of the respective learning journey.</p>
@@ -22,7 +22,7 @@
     <div class="row mb-5 justify-content-center" v-if="this.job_role_name != ''">
       <div class="col-sm-6 col-lg-3">
         <div class="card">
-          <div class="card-header text-center justify-content-center">
+          <div class="card-header border-bottom-0 text-center justify-content-center">
             <h6 class="card-title mt-2">Job Role</h6>
             <h5 class="card-title">{{this.job_role_name}}</h5>
           </div>
@@ -32,8 +32,8 @@
 
     <div class="row mb-3 justify-content-center" v-if="this.coursesDetails_arr.length != 0">
       <div class="table-responsive col-md-10">
-        <table class="table table-success table-striped">
-          <thead>
+        <table class="table table-striped">
+          <thead class="table-success">
             <tr>
               <th scope="col">Course ID</th>
               <th scope="col">Course Name</th>
@@ -52,14 +52,6 @@
             </tr>
           </tbody>
         </table>
-      </div>
-    </div>
-    
-    <div class="row mb-3 justify-content-center" v-if="this.coursesDetails_arr.length != 0">
-      <div class="table-responsive col-md-10">
-        <table class="table table-success table-striped">
-            <button type="button" class="btn btn-outline-success" @click="DeleteLJ(ljID)" style = "margin-left: 20px;">Delete Learning Journey</button>
-          </table>
       </div>
     </div>
   </div>
@@ -190,11 +182,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  thead, tbody {
-    text-align: start !important;
-  }
-  .card-title {
-    margin: 0 !important;
-  }
+
+h2 {
+  margin: 0px !important;
+}
+
+.title {
+  text-align: center;
+}
+
+thead, tbody {
+  text-align: start !important;
+}
+.card-title {
+  margin: 0 !important;
+}
 
 </style>

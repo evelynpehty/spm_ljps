@@ -2,94 +2,96 @@
     <Loading v-show="loading" />
     <Modal v-if="modalActive" :modalMessage="modalMessage" :btnActive="btnActive" v-on:close-modal="closeModal" v-on:btn-yes="btnYes" v-on:btn-no="btnNo"/>
     <div class="container-fluid">
-            <div v-if="!learningjourney_existence">
-                <h1 style = "margin-top:80px; text-align: center;">Learning Journey does not exist</h1> 
-            </div>
+        <div v-if="!learningjourney_existence">
+            <h1 style = "margin-top:100px; text-align: center;">Learning Journey does not exist</h1> 
+        </div>
 
-            <div v-else> 
-                <div class="row" style="margin-top:80px">
-                    <h2 class="title">Update Learning Journey</h2>
+        <div v-else> 
+            <div class="row" style="margin-top:100px">
+                <h2 class="title">Update Learning Journey</h2>
                 <p class="title">You may click on the course name for more details of the course</p>
-            
+        
+                <div v-if="final_arr.length != 0">
+                    <h5> Active Skills and Courses: </h5>
+                    <div v-for="value, key in final_arr" :key="key" class="accordion" id="accordionExample">
+                        <div v-if="(value.Course_List).length !=0" class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" style="background-color:#80968a; color: white" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse'+key" aria-expanded="true" :aria-controls="'collapse'+key" >
+                                {{value.Skill_Item.Skill_Name}}
+                            </button>
+                            </h2>
+                            <div :id="'collapse'+key" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">  
+                                    <div v-for="course_value, course_key in value.Course_List" :key="course_key" class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" :id="course_value.Course_ID" :value="course_value.Course_ID" v-model="selected_course">
+                                        <label class="form-check-label" @click="OpenModal(course_value)">{{course_value.Course_Name}}</label> 
+                                        <span class="ms-1 badge" style="background-color:#80968a">{{course_value.registration_status}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <div v-if="final_arr.length != 0">
-                <h5> Active Skills and Courses: </h5>
-                <div v-for="value, key in final_arr" :key="key" class="accordion" id="accordionExample">
-                    <div v-if="(value.Course_List).length !=0" class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" style="background-color:#80968a; color: white" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse'+key" aria-expanded="true" :aria-controls="'collapse'+key" >
-                            {{value.Skill_Item.Skill_Name}}
-                        </button>
-                        </h2>
-                        <div :id="'collapse'+key" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">  
-                                <div v-for="course_value, course_key in value.Course_List" :key="course_key" class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" :id="course_value.Course_ID" :value="course_value.Course_ID" v-model="selected_course">
-                                    <label class="form-check-label" @click="OpenModal(course_value)">{{course_value.Course_Name}}</label> 
-                                    <span class="ms-1 badge" style="background-color:#80968a">{{course_value.registration_status}}</span>
+                <div class="row mb-3 justify-content-center" v-else>
+                    <div class="col-sm-12 col-md-10">
+                        <div class="alert alert-danger show mb-5" role="alert">
+                            <h4 class="text-center m-0">No Available Active Skills</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:20px" v-if="retired_courses.length != 0 | retired_skills.length !=0">
+                    <h5> You may want to consider removing the following courses: </h5>
+                </div>
+
+                <div v-if="retired_courses.length != 0">
+                    <div class="accordion" id="accordionRetiredCourses">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" style="background-color:#80968a; color: white" type="button"  data-bs-toggle="collapse" data-bs-target="#collapseRetiredCourses" aria-expanded="true" aria-controls="collapseRetiredCourses">
+                                Courses that are Pending / Retired
+                            </button>
+                            </h2>
+                            <div id="collapseRetiredCourses" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionRetiredCourses">
+                                <div class="accordion-body">   
+                                    <div v-for="value, key in retired_courses" :key="key" class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" :id="value.Course_ID" :value="value.Course_ID" v-model="selected_course">
+                                        <label class="form-check-label" @click="OpenModal(value)">{{value.Course_Name}}</label> 
+                                        <span class="ms-1 badge" style="background-color:#80968a">{{value.registration_status}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="retired_skills.length != 0">
+                    <div class="accordion" id="accordionRetiredSkills">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" style="background-color:#80968a; color: white" type="button"  data-bs-toggle="collapse" data-bs-target="#collapseRetiredSkills" aria-expanded="true" aria-controls="collapseRetiredSkills">
+                                Courses with No Assigned Skills
+                            </button>
+                            </h2>
+                            <div id="collapseRetiredSkills" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">   
+                                    <div v-for="value, key in  retired_skills" :key="key" class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" :id="value.Course_ID" :value="value.Course_ID" v-model="selected_course">
+                                        <label class="form-check-label" @click="OpenModal(value)">{{value.Course_Name}}</label> 
+                                        <span class="ms-1 badge" style="background-color:#80968a">{{value.registration_status}}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div v-else>
-                <h3> No Available Skills </h3>
-            </div>
-
-            <div class="row" style="margin-top:20px" v-if="retired_courses.length != 0 | retired_skills.length !=0">
-                <h5> You may want to consider removing the following courses: </h5>
-            </div>
-
-            <div v-if="retired_courses.length != 0">
-                <div class="accordion" id="accordionRetiredCourses">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" style="background-color:#80968a; color: white" type="button"  data-bs-toggle="collapse" data-bs-target="#collapseRetiredCourses" aria-expanded="true" aria-controls="collapseRetiredCourses">
-                            Courses that are Pending / Retired
-                        </button>
-                        </h2>
-                        <div id="collapseRetiredCourses" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionRetiredCourses">
-                            <div class="accordion-body">   
-                                <div v-for="value, key in retired_courses" :key="key" class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" :id="value.Course_ID" :value="value.Course_ID" v-model="selected_course">
-                                    <label class="form-check-label" @click="OpenModal(value)">{{value.Course_Name}}</label> 
-                                    <span class="ms-1 badge" style="background-color:#80968a">{{value.registration_status}}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div v-if="retired_skills.length != 0">
-                <div class="accordion" id="accordionRetiredSkills">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" style="background-color:#80968a; color: white" type="button"  data-bs-toggle="collapse" data-bs-target="#collapseRetiredSkills" aria-expanded="true" aria-controls="collapseRetiredSkills">
-                            Courses with No Assigned Skills
-                        </button>
-                        </h2>
-                        <div id="collapseRetiredSkills" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">   
-                                <div v-for="value, key in  retired_skills" :key="key" class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" :id="value.Course_ID" :value="value.Course_ID" v-model="selected_course">
-                                    <label class="form-check-label" @click="OpenModal(value)">{{value.Course_Name}}</label> 
-                                    <span class="ms-1 badge" style="background-color:#80968a">{{value.registration_status}}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
             <div v-if="final_arr.length != 0 | retired_courses.length != 0 | retired_skills.length !=0" class="row" style="margin-top:20px">
                 <div class="d-grid mb-2">
                     <button type="button" class="btn btn-success p-2" :disabled="enablebutton == true" @click="UpdateLJ()">Update Learning Journey</button>
                 </div>
             </div>
-        </div>
         </div>
     </div>
 </template>
@@ -416,7 +418,13 @@
   }
   </script>
   
-  <style>
+  <style lang="scss" scoped>
+  h2 {
+    margin: 0px !important;
+}
+.title {
+    text-align: center;
+}
   .accordion-button::after {
       background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
    }
@@ -425,6 +433,7 @@
     outline: 0 !important;
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 0) !important;
   }
+  
   
   </style>                       
 

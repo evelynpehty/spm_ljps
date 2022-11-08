@@ -2,7 +2,7 @@
   <Loading v-show="loading" />
   <Modal v-if="modalActive" :modalMessage="modalMessage" :btnActive="btnActive" v-on:close-modal="closeModal" v-on:btn-yes="btnYes" v-on:btn-no="btnNo"/>
   <div class="container-fluid">
-    <div class="row" style="margin-top:80px">
+    <div class="row" style="margin-top:100px">
       <h2 class="title">View Learning Journey</h2>
       <p class="title">Please select a learning journey to view more details.</p>
     </div>
@@ -155,5 +155,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+h2 {
+  margin: 0px !important;
+}
+.title {
+  text-align: center;
+}
 </style>
