@@ -18,3 +18,7 @@
 ### to run frontend successfully (ensure that backend is running)
 1. cd frontend
 2. npm run serve
+
+### Login Credentials
+1. Password for Admin (RoleID 1): "admin"
+2. Password for Staff (RoleID 2,3,4): "staff"
