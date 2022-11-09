@@ -1,12 +1,9 @@
 # Learning Journey Planning System
  
-### to set up backend
-- python -m pip install -U Flask
-- python -m pip install -U flask-cors
-- python -m pip install -U Flask-SQLAlchemy
-- python -m pip install mysql-connector-python
+### to set up backend (cd backend)
+- pip install -r requirements.txt
 
-### to set up frontend
+### to set up frontend (cd frontend)
 - npm install
 - npm install vue-multiselect@next
 - npm install @vueform/toggle
