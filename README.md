@@ -9,6 +9,7 @@
 ### to set up frontend
 - npm install
 - npm install vue-multiselect@next
+- npm install @vueform/toggle
 
 ### to run backend successfully
 1. get and include onfig.py file
