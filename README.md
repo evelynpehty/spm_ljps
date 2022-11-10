@@ -1,4 +1,12 @@
-# Learning Journey Planning System
+# IS212 SPM G5T2 | Learning Journey Planning System
+
+### Team
+1. Koh Pei Ling
+2. Evelyn Peh
+3. Wan Xin
+4. Ryan Yak
+5, Calista Teo
+6. Cheyenne Loh
  
 ### to set up backend (cd backend)
 - pip install -r requirements.txt
