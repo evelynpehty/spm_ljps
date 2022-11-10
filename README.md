@@ -5,7 +5,7 @@
 2. Evelyn Peh
 3. Wan Xin
 4. Ryan Yak
-5, Calista Teo
+5. Calista Teo
 6. Cheyenne Loh
  
 ### to set up backend (cd backend)
